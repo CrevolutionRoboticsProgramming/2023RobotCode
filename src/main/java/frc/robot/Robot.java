@@ -81,6 +81,7 @@ public class Robot extends LoggedRobot {
     logger.start();
     
     ctreConfigs = new CTREConfigs();
+    m_robotContainer = new RobotContainer();
   }
 
   /**
