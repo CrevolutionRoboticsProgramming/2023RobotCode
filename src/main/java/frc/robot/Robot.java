@@ -82,6 +82,7 @@ public class Robot extends LoggedRobot {
     
     ctreConfigs = new CTREConfigs();
     m_robotContainer = new RobotContainer();
+    m_robotContainer.reset();
   }
 
   /**
@@ -103,7 +104,9 @@ public class Robot extends LoggedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    m_robotContainer.reset();
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -111,6 +114,7 @@ public class Robot extends LoggedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    m_robotContainer.reset();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -125,6 +129,7 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void teleopInit() {
+    m_robotContainer.reset();
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -140,6 +145,7 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void testInit() {
+    m_robotContainer.reset();
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
   }

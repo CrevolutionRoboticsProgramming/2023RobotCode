@@ -1,16 +1,16 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import frc.robot.driver.DriverGamepad;
-import frc.robot.intake.Intake;
-import org.photonvision.PhotonCamera;
+import frc.robot.intake.IntakePivot;
+import frc.robot.intake.IntakeRoller;
+import frc.robot.intake.commands.HoldPivot;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.JoystickConstants;
 import frc.robot.Constants.SwerveDrivetrainConstants;
-import frc.robot.Constants.VisionConstants;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.commands.autos.OnePieceInside;
 import frc.robot.commands.autos.TestAuton;
@@ -18,19 +18,22 @@ import frc.robot.commands.autos.TwoPieceInsideBalance;
 import frc.robot.commands.autos.TwoPieceOutsideBalance;
 import frc.robot.subsystems.drivetrain.SwerveDrivetrain;
 import frc.robot.subsystems.vision.PoseEstimator;
+import org.photonvision.PhotonCamera;
 
 public class RobotContainer {
     /*Declare External Sensors -> Cameras */
-    public static PhotonCamera orangePi = new PhotonCamera(VisionConstants.CAMERA_NAME);
+    public static PhotonCamera orangePi = new PhotonCamera(Constants.VisionConstants.CAMERA_NAME);
 
     /*Declare Joystick*/
-    public static XboxController driverControllerRetro;
+    public static XboxController driverControllerRetro = new XboxController(0);
     public static DriverGamepad driverGamepad;
 
     /*Declare Subsystems*/
     public static SwerveDrivetrain drivetrain;
     public static PoseEstimator poseEstimator;
-    public static Intake intake;
+    public static IntakePivot intakePivot;
+    public static IntakeRoller intakeRoller;
+    public static PneumaticsControlModule pcm;
 
     /*Sendable Chooser Selector for Auton */
     public static SendableChooser<Command> autoChooser;
@@ -39,11 +42,11 @@ public class RobotContainer {
         // Subsystem initialization
         drivetrain = new SwerveDrivetrain();
         poseEstimator = new PoseEstimator(orangePi, drivetrain);
-        intake = new Intake();
+        intakePivot = new IntakePivot();
+        intakeRoller = new IntakeRoller();
 
         // Gamepad initialization
         driverGamepad = new DriverGamepad();
-        driverControllerRetro = new XboxController(JoystickConstants.DRIVER_PORT_ID);
 
         drivetrain.setDefaultCommand(new TeleopDrive(drivetrain, driverControllerRetro,
                 XboxController.Axis.kLeftY.value, XboxController.Axis.kLeftX.value, XboxController.Axis.kRightX.value
@@ -51,6 +54,8 @@ public class RobotContainer {
 
         autoChooser = getAutonChooser();
         SmartDashboard.putData(autoChooser);
+
+        pcm = new PneumaticsControlModule();
     }
 
     /**
@@ -70,5 +75,13 @@ public class RobotContainer {
         chooser.addOption("TestAuton", new TestAuton(drivetrain));
         chooser.addOption("OnePieceInside", new OnePieceInside(drivetrain));
         return chooser;
+    }
+
+    public void reset() {
+        driverGamepad.resetConfig();
+    }
+
+    private void setDefaultCommands() {
+        intakePivot.setDefaultCommand(new HoldPivot(intakePivot));
     }
 }

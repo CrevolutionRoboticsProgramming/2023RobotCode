@@ -1,8 +1,5 @@
 package frc.robot.CrevoLib.math;
 
-import edu.wpi.first.math.util.Units;
-import frc.robot.Constants.SwerveDrivetrainConstants;
-
 public class Conversions {
     //counts the ticks --> converts to degrees
     public static double falconToDegrees(double counts, double gearRatio) {
@@ -45,5 +42,10 @@ public class Conversions {
     }
     public static double falconToMeters(double positionCounts, double circumference, double gearRatio){
         return positionCounts * (circumference / (gearRatio * 2048.0));
+    }
+
+    // Converts a range from 0 to 1 to radians
+    public static double rotationToRadians(double range) {
+        return range * 2 * Math.PI;
     }
 }
