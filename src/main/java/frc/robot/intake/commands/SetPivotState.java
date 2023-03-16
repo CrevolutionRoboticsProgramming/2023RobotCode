@@ -52,7 +52,7 @@ public class SetPivotState extends CommandBase {
             startTs = System.currentTimeMillis();
         }
 
-        final var duration = ((double) System.currentTimeMillis() - startTs) / 1000;
+        final var duration = getElapsedTime();
         final var targetState = profile.calculate(duration);
 
         final var ffOutput = ffController.calculate(pivot.getAngleRads(), pivot.getVelocityRps());
@@ -64,5 +64,14 @@ public class SetPivotState extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         pivot.stop();
+    }
+
+    @Override
+    public boolean isFinished() {
+        return profile != null && profile.isFinished(getElapsedTime());
+    }
+
+    private double getElapsedTime() {
+        return (startTs == null) ? 0 : ((double) System.currentTimeMillis()) / 1000;
     }
 }
