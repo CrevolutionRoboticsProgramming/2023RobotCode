@@ -23,7 +23,8 @@ public class RunPivotManual extends CommandBase {
 
     @Override
     public void execute() {
-        pivot.setPivotOutput(supplier.getAsDouble());
+        System.out.println(supplier.getAsDouble());
+        pivot.set(supplier.getAsDouble());
     }
 
     @Override

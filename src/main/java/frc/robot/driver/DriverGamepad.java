@@ -5,8 +5,12 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.SpectrumLib.gamepads.Gamepad;
 import frc.robot.RobotContainer;
+import frc.robot.intake.IntakeConfig;
+import frc.robot.intake.IntakePivot;
 import frc.robot.intake.commands.IntakeCommands;
 import frc.robot.intake.commands.   RunIntakeManual;
+import frc.robot.intake.commands.RunPivotManual;
+import frc.robot.intake.commands.SetPivotState;
 
 public class DriverGamepad extends Gamepad {
     public DriverGamepad() {
@@ -20,9 +24,18 @@ public class DriverGamepad extends Gamepad {
 
         // Intake input
         gamepad.rightBumper.onTrue(IntakeCommands.toggleHoodState());
-        gamepad.rightTriggerButton.and(shift()).whileTrue(
+        gamepad.rightTriggerButton.whileTrue(
                 new RunIntakeManual(RobotContainer.intakeRoller, this::getRightTriggerRaw)
         );
+        gamepad.leftTriggerButton.whileTrue(
+                new RunIntakeManual(RobotContainer.intakeRoller, () -> -getLeftTriggerRaw())
+        );
+
+        gamepad.aButton.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kDeployed));
+        gamepad.xButton.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kStowed));
+        gamepad.bButton.whileTrue(new RunPivotManual(RobotContainer.intakePivot, () -> -0.05));
+
+//        shift().whileTrue(new RunPivotManual(RobotContainer.intakePivot, () -> gamepad.rightStick.getX()));
     }
 
     @Override

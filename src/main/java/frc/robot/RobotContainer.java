@@ -25,7 +25,7 @@ import frc.robot.vision.PoseEstimator;
 
 public class RobotContainer {
 
-  public static PhotonCamera orangePi = new PhotonCamera(Constants.VisionConstants.CAMERA_NAME);
+//  public static PhotonCamera orangePi = new PhotonCamera(Constants.VisionConstants.CAMERA_NAME);
 
     /*Declare Joystick*/
     public static XboxController driverControllerRetro = new XboxController(0);
@@ -33,7 +33,7 @@ public class RobotContainer {
 
     /*Declare Subsystems*/
     public static SwerveDrivetrain drivetrain;
-    public static PoseEstimator poseEstimator;
+//    public static PoseEstimator poseEstimator;
     public static IntakePivot intakePivot;
     public static IntakeRoller intakeRoller;
     public static PneumaticsControlModule pcm;
@@ -44,21 +44,22 @@ public class RobotContainer {
     public RobotContainer() {
         // Subsystem initialization
         drivetrain = new SwerveDrivetrain();
-        poseEstimator = new PoseEstimator(orangePi, drivetrain);
+//        poseEstimator = new PoseEstimator(orangePi, drivetrain);
         intakePivot = new IntakePivot();
         intakeRoller = new IntakeRoller();
 
         // Gamepad initialization
         driverGamepad = new DriverGamepad();
-
+//
         drivetrain.setDefaultCommand(new TeleopDrive(drivetrain, driverControllerRetro,
                 XboxController.Axis.kLeftY.value, XboxController.Axis.kLeftX.value, XboxController.Axis.kRightX.value
                 , SwerveDrivetrainConstants.FIELD_RELATIVE, SwerveDrivetrainConstants.OPEN_LOOP));
 
-        autoChooser = getAutonChooser();
-        SmartDashboard.putData(autoChooser);
+//        autoChooser = getAutonChooser();
+//        SmartDashboard.putData(autoChooser);
 
         pcm = new PneumaticsControlModule();
+        pcm.enableCompressorDigital();
     }
 
     /**
@@ -72,12 +73,13 @@ public class RobotContainer {
     }
 
     private SendableChooser<Command> getAutonChooser() {
-        SendableChooser<Command> chooser = new SendableChooser<>();
-        chooser.setDefaultOption("TwoPieceINSIDEBalance", new TwoPieceInsideBalance(drivetrain));
-        chooser.addOption("TwoPieceOUTSIDEBalance", new TwoPieceOutsideBalance(drivetrain));
-        chooser.addOption("TestAuton", new TestAuton(drivetrain));
-        chooser.addOption("OnePieceInside", new OnePieceInside(drivetrain));
-        return chooser;
+//        SendableChooser<Command> chooser = new SendableChooser<>();
+//        chooser.setDefaultOption("TwoPieceINSIDEBalance", new TwoPieceInsideBalance(drivetrain));
+//        chooser.addOption("TwoPieceOUTSIDEBalance", new TwoPieceOutsideBalance(drivetrain));
+//        chooser.addOption("TestAuton", new TestAuton(drivetrain));
+//        chooser.addOption("OnePieceInside", new OnePieceInside(drivetrain));
+//        return chooser;
+        return null;
     }
 
     public void reset() {

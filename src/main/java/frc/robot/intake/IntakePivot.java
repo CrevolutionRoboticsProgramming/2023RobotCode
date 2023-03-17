@@ -24,7 +24,7 @@ public class IntakePivot extends SubsystemBase {
                 IntakeConfig.kHoodReverseChannel
         );
 
-        spark.setIdleMode(CANSparkMax.IdleMode.kCoast);
+        spark.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
         hoodState = IntakeConfig.HoodState.kClosed;
 
@@ -34,6 +34,7 @@ public class IntakePivot extends SubsystemBase {
 
     private void configureMotor() {
         spark.setInverted(IntakeConfig.kPivotMotorInverted);
+        spark.setSmartCurrentLimit(40, 40);
     }
 
     private void configureSensors() {
@@ -45,7 +46,8 @@ public class IntakePivot extends SubsystemBase {
      * @return position in radians
      */
     public double getAngleRads() {
-        return Conversions.rotationToRadians(encoder.getPosition());
+        final var angle = Conversions.rotationToRadians(encoder.getPosition());
+        return (angle >= 6) ? 0 : angle;
     }
 
     /**
@@ -55,13 +57,16 @@ public class IntakePivot extends SubsystemBase {
         return Conversions.rotationToRadians(encoder.getVelocity());
     }
 
+    public double getOutputCurrent() {
+        return Math.abs(spark.getOutputCurrent());
+    }
+
     /**
-     * Sets the percent output of the pivot motor
-     *
-     * @param output [-1 - 1]
+     * Sets the voltage of the pivot motor
+     * @param voltage voltage
      */
-    public void setPivotOutput(double output) {
-        spark.set(output);
+    public void set(double voltage) {
+        spark.set(voltage);
     }
 
     public void stop() {
@@ -82,6 +87,8 @@ public class IntakePivot extends SubsystemBase {
                 hoodState = IntakeConfig.HoodState.kOpen;
                 break;
         }
+
+        System.out.println("SetIntakeState[" + hoodState.name() + "]");
 
         hoodSolenoid.set(hoodState.state);
     }

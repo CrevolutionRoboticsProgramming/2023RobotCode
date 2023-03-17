@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class IntakeConfig {
     public enum HoodState {
-        kOpen(DoubleSolenoid.Value.kForward), kClosed(DoubleSolenoid.Value.kReverse);
+        kOpen(DoubleSolenoid.Value.kReverse), kClosed(DoubleSolenoid.Value.kForward);
 
         HoodState(DoubleSolenoid.Value state) {
             this.state = state;
@@ -14,7 +14,7 @@ public class IntakeConfig {
     }
 
     public enum PivotState {
-        kDeployed(0), kStowed(Math.PI / 4), kExtract(0);
+        kDeployed(0), kStowed(Math.PI / 2), kExtract(0);
 
         PivotState(double target) {
             this.target = target;
@@ -61,17 +61,20 @@ public class IntakeConfig {
     public static final double kVelI = 0.0;
     public static final double kVelD = 0.0;
 
-    // Pivot Feedforward Constants
-    public static final double kG = 0.0;
+    // Pivot Feedforward Constants (reca.lc)
+    public static final double kG = 0.23;
     public static final double kS = 0.0;
-    public static final double kV = 0.0;
-    public static final double kA = 0.0;
+    public static final double kV = 2.92;
+    public static final double kA = 0.01;
 
     // Motion Profile Parameters
-    public static final double kMaxAngularAcceleration = 0.0;
-    public static final double kMaxAngularVelocity = 0.0;
+    public static final double kMaxAngularAcceleration = 4.5;
+    public static final double kMaxAngularVelocity = 3.0;
 
     // Sensor Parameters
     public static final boolean kPivotEncoderInverted = true;
-    public static final double kPivotZeroOffset = -0.116447;
+    public static final double kPivotZeroOffset = 0.98;
+
+    public static final double kTensionCurrentLimit = 5;
+    public static final double kTensionOutput = -0.05;
 }
