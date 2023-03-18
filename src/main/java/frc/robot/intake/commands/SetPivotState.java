@@ -60,6 +60,11 @@ public class SetPivotState extends CommandBase {
                 runProfile(duration);
                 if (profile.isFinished(duration)) {
                     state = (targetPivotState == IntakeConfig.PivotState.kDeployed) ? State.kTension : State.kEnd;
+
+                    // TODO: Remove debug print
+                    if (state == State.kTension) {
+                        System.out.println(getName() + ": starting tensioning");
+                    }
                 }
                 break;
 

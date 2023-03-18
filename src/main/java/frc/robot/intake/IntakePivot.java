@@ -11,22 +11,12 @@ import frc.robot.CrevoLib.math.Conversions;
 public class IntakePivot extends SubsystemBase {
     private final CANSparkMax spark;
     private final SparkMaxAbsoluteEncoder encoder;
-    private final DoubleSolenoid hoodSolenoid;
 
     private IntakeConfig.HoodState hoodState;
 
     public IntakePivot() {
         spark = new CANSparkMax(IntakeConfig.kPivotSparkID, CANSparkMaxLowLevel.MotorType.kBrushless);
         encoder = spark.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
-        hoodSolenoid = new DoubleSolenoid(
-                PneumaticsModuleType.CTREPCM,
-                IntakeConfig.kHoodForwardChannel,
-                IntakeConfig.kHoodReverseChannel
-        );
-
-        spark.setIdleMode(CANSparkMax.IdleMode.kBrake);
-
-        hoodState = IntakeConfig.HoodState.kClosed;
 
         configureMotor();
         configureSensors();
@@ -35,6 +25,7 @@ public class IntakePivot extends SubsystemBase {
     private void configureMotor() {
         spark.setInverted(IntakeConfig.kPivotMotorInverted);
         spark.setSmartCurrentLimit(40, 40);
+        spark.setIdleMode(CANSparkMax.IdleMode.kBrake);
     }
 
     private void configureSensors() {
@@ -62,34 +53,14 @@ public class IntakePivot extends SubsystemBase {
     }
 
     /**
-     * Sets the voltage of the pivot motor
-     * @param voltage voltage
+     * Sets the output of the pivot motor (range -1 to 1)
+     * @param output output
      */
-    public void set(double voltage) {
-        spark.set(voltage);
+    public void set(double output) {
+        spark.set(output);
     }
 
     public void stop() {
         spark.set(0);
-    }
-
-    public void setHoodState(IntakeConfig.HoodState state) {
-        hoodState = state;
-        hoodSolenoid.set(state.state);
-    }
-
-    public void toggleHoodState() {
-        switch (hoodState) {
-            case kOpen:
-                hoodState = IntakeConfig.HoodState.kClosed;
-                break;
-            case kClosed:
-                hoodState = IntakeConfig.HoodState.kOpen;
-                break;
-        }
-
-        System.out.println("SetIntakeState[" + hoodState.name() + "]");
-
-        hoodSolenoid.set(hoodState.state);
     }
 }

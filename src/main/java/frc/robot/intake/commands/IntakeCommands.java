@@ -19,10 +19,6 @@ public class IntakeCommands {
     }
 
     public static Command setHoodState(IntakeConfig.HoodState state) {
-        return new InstantCommand(() -> RobotContainer.intakePivot.setHoodState(state));
-    }
-
-    public static Command toggleHoodState() {
-        return new InstantCommand(() -> RobotContainer.intakePivot.toggleHoodState());
+        return new InstantCommand(() -> RobotContainer.intakeHood.setState(state));
     }
 }

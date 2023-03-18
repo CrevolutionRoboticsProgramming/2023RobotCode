@@ -1,5 +1,6 @@
 package frc.robot;
 
+import frc.robot.intake.IntakeHood;
 import org.photonvision.PhotonCamera;
 
 import edu.wpi.first.wpilibj.PneumaticsControlModule;
@@ -36,6 +37,7 @@ public class RobotContainer {
 //    public static PoseEstimator poseEstimator;
     public static IntakePivot intakePivot;
     public static IntakeRoller intakeRoller;
+    public static IntakeHood intakeHood;
     public static PneumaticsControlModule pcm;
 
     /*Sendable Chooser Selector for Auton */

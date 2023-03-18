@@ -7,10 +7,7 @@ import frc.SpectrumLib.gamepads.Gamepad;
 import frc.robot.RobotContainer;
 import frc.robot.intake.IntakeConfig;
 import frc.robot.intake.IntakePivot;
-import frc.robot.intake.commands.IntakeCommands;
-import frc.robot.intake.commands.   RunIntakeManual;
-import frc.robot.intake.commands.RunPivotManual;
-import frc.robot.intake.commands.SetPivotState;
+import frc.robot.intake.commands.*;
 
 public class DriverGamepad extends Gamepad {
     public DriverGamepad() {
@@ -23,9 +20,9 @@ public class DriverGamepad extends Gamepad {
         gamepad.startButton.onTrue(new InstantCommand(() -> RobotContainer.drivetrain.zeroGyro()));
 
         // Intake input
-        gamepad.rightBumper.onTrue(IntakeCommands.toggleHoodState());
-        gamepad.rightTriggerButton.whileTrue(
-                new RunIntakeManual(RobotContainer.intakeRoller, this::getRightTriggerRaw)
+        gamepad.rightBumper.onTrue(new ToggleHood(RobotContainer.intakeHood));
+        gamepad.rightTriggerButton.whileTrue(new RunIntakeManual(RobotContainer.intakeRoller,
+                this::getRightTriggerRaw)
         );
         gamepad.leftTriggerButton.whileTrue(
                 new RunIntakeManual(RobotContainer.intakeRoller, () -> -getLeftTriggerRaw())
