@@ -9,7 +9,6 @@ public class ToggleHood extends CommandBase {
 
     public ToggleHood(IntakeHood hood) {
         this.hood = hood;
-
         addRequirements(hood);
     }
 

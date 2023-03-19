@@ -48,4 +48,8 @@ public class Conversions {
     public static double rotationToRadians(double range) {
         return range * 2 * Math.PI;
     }
+
+    public static double degreesToRadians(double degrees) {
+        return Math.PI * degrees / 180.0;
+    }
 }

@@ -19,7 +19,7 @@ public class ElevatorConfig {
 
     }
 
-    public static final int kElevatorSparkID = 33;
+    public static final int kElevatorSparkID = 51;
     public static final int smartMotionSlot = 0;
     //Elevator PID Constants
     public static final double kP = 0.0;

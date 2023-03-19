@@ -1,6 +1,8 @@
 package frc.robot.intake;
 
+import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import frc.robot.CrevoLib.math.Conversions;
 
 public class IntakeConfig {
     public enum HoodState {
@@ -14,8 +16,17 @@ public class IntakeConfig {
     }
 
     public enum PivotState {
-        kDeployed(0), kStowed(Math.PI / 2), kExtract(0);
+        kDeployed(0),
+        kStowed(Conversions.degreesToRadians(135)),
+        kScoreLow(Conversions.degreesToRadians(60)),
+        kHumanPlayer(Conversions.degreesToRadians(135)),
+        kUnspecified(0);
 
+        /**
+         * Creates a PivotState with a target in radians
+         *
+         * @param target angle in radians
+         */
         PivotState(double target) {
             this.target = target;
         }
@@ -51,6 +62,9 @@ public class IntakeConfig {
     public static final boolean kPivotMotorInverted = false;
     public static final boolean kRollerMotorInverted = false;
 
+    public static final CANSparkMax.IdleMode kPivotIdleMode = CANSparkMax.IdleMode.kBrake;
+    public static final CANSparkMax.IdleMode kRollerIdleMode = CANSparkMax.IdleMode.kCoast;
+
     // Intake Profiles
     public static IntakeProfile kConeProfile = new IntakeProfile(0, 0, 0.4, "Cone");
     public static IntakeProfile kCubeProfile = new IntakeProfile(0, 0, 0.9, "Cube");
@@ -75,6 +89,12 @@ public class IntakeConfig {
     public static final boolean kPivotEncoderInverted = true;
     public static final double kPivotZeroOffset = 0.98;
 
-    public static final double kTensionCurrentLimit = 5;
+    // Tensioning constants
     public static final double kTensionOutput = -0.05;
+
+    public static final int kDefaultContinuousCurrentLimit = 35;
+    public static final int kDefaultPeakCurrentLimit = 60;
+
+    public static final int kTensionContinuousCurrentLimit = 1;
+    public static final int kTensionPeakCurrentLimit = 1;
 }

@@ -3,8 +3,6 @@ package frc.robot.intake;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.SparkMaxAbsoluteEncoder;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.CrevoLib.math.Conversions;
 
@@ -12,11 +10,12 @@ public class IntakePivot extends SubsystemBase {
     private final CANSparkMax spark;
     private final SparkMaxAbsoluteEncoder encoder;
 
-    private IntakeConfig.HoodState hoodState;
+    private IntakeConfig.PivotState state;
 
     public IntakePivot() {
         spark = new CANSparkMax(IntakeConfig.kPivotSparkID, CANSparkMaxLowLevel.MotorType.kBrushless);
         encoder = spark.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
+        state = IntakeConfig.PivotState.kUnspecified;
 
         configureMotor();
         configureSensors();
@@ -24,13 +23,17 @@ public class IntakePivot extends SubsystemBase {
 
     private void configureMotor() {
         spark.setInverted(IntakeConfig.kPivotMotorInverted);
-        spark.setSmartCurrentLimit(40, 40);
-        spark.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        spark.setIdleMode(IntakeConfig.kPivotIdleMode);
+        setCurrentLimit(IntakeConfig.kDefaultContinuousCurrentLimit, IntakeConfig.kDefaultPeakCurrentLimit);
     }
 
     private void configureSensors() {
         encoder.setZeroOffset(IntakeConfig.kPivotZeroOffset);
         encoder.setInverted(IntakeConfig.kPivotEncoderInverted);
+    }
+
+    public void setIdleMode(CANSparkMax.IdleMode mode) {
+        spark.setIdleMode(mode);
     }
 
     /**
@@ -56,11 +59,23 @@ public class IntakePivot extends SubsystemBase {
      * Sets the output of the pivot motor (range -1 to 1)
      * @param output output
      */
-    public void set(double output) {
+    public void setOutput(double output) {
         spark.set(output);
+    }
+
+    public void setCurrentLimit(int continuousLimit, int peakLimit) {
+        spark.setSmartCurrentLimit(continuousLimit, peakLimit);
     }
 
     public void stop() {
         spark.set(0);
+    }
+
+    public IntakeConfig.PivotState getState() {
+        return state;
+    }
+
+    public void setState(IntakeConfig.PivotState state) {
+        this.state = state;
     }
 }

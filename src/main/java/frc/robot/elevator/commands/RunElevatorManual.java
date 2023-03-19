@@ -31,7 +31,7 @@ public class RunElevatorManual extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-
+    elevator.setElevatorOuput(0);
   }
  
   @Override

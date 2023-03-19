@@ -8,12 +8,6 @@ import frc.robot.intake.IntakeConfig;
 import frc.robot.intake.IntakePivot;
 
 public class SetPivotState extends CommandBase {
-    private enum State {
-        kProfile,
-        kTension,
-        kEnd
-    }
-
     private final IntakePivot pivot;
     private final IntakeConfig.PivotState targetPivotState;
 
@@ -22,7 +16,6 @@ public class SetPivotState extends CommandBase {
     private final PIDController pidController;
 
     private Long startTs;
-    private State state;
 
     public SetPivotState(IntakePivot pivot, IntakeConfig.PivotState targetPivotState) {
         this.pivot = pivot;
@@ -32,7 +25,6 @@ public class SetPivotState extends CommandBase {
         pidController = new PIDController(IntakeConfig.kVelP, IntakeConfig.kVelI, IntakeConfig.kVelD);
 
         startTs = null;
-        state = State.kProfile;
 
         addRequirements(pivot);
     }
@@ -48,53 +40,11 @@ public class SetPivotState extends CommandBase {
         profile = generateProfile();
 
         startTs = null;
-
-        state = State.kProfile;
     }
 
     @Override
     public void execute() {
-        switch (state) {
-            case kProfile:
-                final var duration = getElapsedTime();
-                runProfile(duration);
-                if (profile.isFinished(duration)) {
-                    state = (targetPivotState == IntakeConfig.PivotState.kDeployed) ? State.kTension : State.kEnd;
-
-                    // TODO: Remove debug print
-                    if (state == State.kTension) {
-                        System.out.println(getName() + ": starting tensioning");
-                    }
-                }
-                break;
-
-            case kTension:
-                pivot.set(IntakeConfig.kTensionOutput);
-                if (pivot.getOutputCurrent() >= IntakeConfig.kTensionCurrentLimit) {
-                    state = State.kEnd;
-                }
-                break;
-
-            default:
-                break;
-        }
-    }
-
-    @Override
-    public void end(boolean interrupted) {
-        pivot.stop();
-    }
-
-    @Override
-    public boolean isFinished() {
-        return state == State.kEnd;
-    }
-
-    private double getElapsedTime() {
-        return (startTs == null) ? 0 : ((double) System.currentTimeMillis() - startTs) / 1000.0;
-    }
-
-    private void runProfile(double duration) {
+        final var duration = getElapsedTime();
         if (startTs == null) {
             startTs = System.currentTimeMillis();
         }
@@ -104,7 +54,23 @@ public class SetPivotState extends CommandBase {
         final var ffOutput = ffController.calculate(pivot.getAngleRads(), targetState.velocity);
         final var pidOutput = pidController.calculate(pivot.getVelocityRps(), targetState.velocity);
 
-        pivot.set((ffOutput + pidOutput) / 12.0);
+        pivot.setOutput((ffOutput + pidOutput) / 12.0);
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        System.out.println(getName() + ": end");
+        pivot.setState(interrupted ? IntakeConfig.PivotState.kUnspecified : targetPivotState);
+        pivot.stop();
+    }
+
+    @Override
+    public boolean isFinished() {
+        return profile != null && profile.isFinished(getElapsedTime());
+    }
+
+    private double getElapsedTime() {
+        return (startTs == null) ? 0 : ((double) System.currentTimeMillis() - startTs) / 1000.0;
     }
 
     private TrapezoidProfile generateProfile() {

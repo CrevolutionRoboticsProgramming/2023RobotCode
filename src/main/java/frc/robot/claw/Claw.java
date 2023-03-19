@@ -11,33 +11,35 @@ import frc.robot.claw.ClawConfig.ClawState;
 import frc.robot.intake.IntakeConfig.HoodState;
 
 public class Claw extends SubsystemBase {
-  private final DoubleSolenoid clawSolenoid;
-  private ClawState clawState;
+    private final DoubleSolenoid clawSolenoid;
+    private ClawState clawState;
 
-  public Claw() {
-    clawSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM,
-     ClawConfig.kClawForwardChannel, 
-     ClawConfig.kClawReverseChannel);
+    public Claw() {
+        clawSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM,
+                ClawConfig.kClawForwardChannel,
+                ClawConfig.kClawReverseChannel);
 
-     clawState = ClawConfig.ClawState.kOpen;
-  }
-
-
-  public void setClawState(ClawConfig.ClawState state) {
-    clawState = state;
-    clawSolenoid.set(state.state);
-  }
-
-  public void toggleClawState() {
-    switch (clawState) {
-        case kOpen:
-            clawState = ClawConfig.ClawState.kClosed;
-            break;
-        case kClosed:
-            clawState = ClawConfig.ClawState.kOpen;
-            break;
+        clawState = ClawConfig.ClawState.kOpen;
     }
 
-    clawSolenoid.set(clawState.state);
-  }
+
+    public void setClawState(ClawConfig.ClawState state) {
+        clawState = state;
+        clawSolenoid.set(state.state);
+    }
+
+    public void toggleClawState() {
+        switch (clawState) {
+            case kOpen:
+                clawState = ClawConfig.ClawState.kClosed;
+                break;
+            case kClosed:
+                clawState = ClawConfig.ClawState.kOpen;
+                break;
+        }
+
+        System.out.println("Setting claw state: " + clawState.name());
+
+        clawSolenoid.set(clawState.state);
+    }
 }

@@ -43,7 +43,7 @@ public class RobotContainer {
     public static IntakeHood intakeHood;
     public static Elevator elevator;
     public static Claw claw;
-    public static PneumaticsControlModule pcm;
+    //public static PneumaticsControlModule pcm;
 
     /*Sendable Chooser Selector for Auton */
     public static SendableChooser<Command> autoChooser;
@@ -54,6 +54,7 @@ public class RobotContainer {
 //        poseEstimator = new PoseEstimator(orangePi, drivetrain);
         intakePivot = new IntakePivot();
         intakeRoller = new IntakeRoller();
+        intakeHood = new IntakeHood();
         elevator = new Elevator();
         claw = new Claw();
 
@@ -68,8 +69,7 @@ public class RobotContainer {
 //        autoChooser = getAutonChooser();
 //        SmartDashboard.putData(autoChooser);
 
-        pcm = new PneumaticsControlModule();
-        pcm.enableCompressorDigital();
+        setDefaultCommands();
     }
 
     /**

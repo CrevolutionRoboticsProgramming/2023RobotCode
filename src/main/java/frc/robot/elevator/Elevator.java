@@ -20,63 +20,71 @@ import frc.robot.elevator.ElevatorConfig.ElevatorPosition;
 import frc.robot.elevator.ElevatorConfig;
 
 public class Elevator extends SubsystemBase {
-  private final CANSparkMax elevatorSpark;
-  private final RelativeEncoder elevatorEncoder;
-  private final SparkMaxPIDController elevatorPIDController;
+    private final CANSparkMax elevatorSpark;
+    private final RelativeEncoder elevatorEncoder;
+    private final SparkMaxPIDController elevatorPIDController;
 
-  public Elevator() {
-    elevatorSpark = new CANSparkMax(ElevatorConfig.kElevatorSparkID, MotorType.kBrushless);
-    elevatorEncoder = elevatorSpark.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature,8192);
+    public Elevator() {
+        elevatorSpark = new CANSparkMax(ElevatorConfig.kElevatorSparkID, MotorType.kBrushless);
+        elevatorEncoder = elevatorSpark.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, 8192);
 
-    configureElevatorMotor();
-    configureElevatorSensors();
-    elevatorSpark.restoreFactoryDefaults();
+        elevatorSpark.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
-    elevatorPIDController = elevatorSpark.getPIDController();
+        configureElevatorMotor();
+        configureElevatorSensors();
+        elevatorSpark.restoreFactoryDefaults();
 
-    elevatorPIDController.setP(ElevatorConfig.kP);
-    elevatorPIDController.setI(ElevatorConfig.kI);
-    elevatorPIDController.setD(ElevatorConfig.kD);
-    elevatorPIDController.setIZone(ElevatorConfig.kIz);
-    elevatorPIDController.setFF(ElevatorConfig.kFF);
-    elevatorPIDController.setOutputRange(ElevatorConfig.kMinOutput, ElevatorConfig.kMaxOutput);
+        elevatorPIDController = elevatorSpark.getPIDController();
 
-    
-    elevatorPIDController.setSmartMotionMaxVelocity(ElevatorConfig.maxVel, ElevatorConfig.smartMotionSlot);
-    elevatorPIDController.setSmartMotionMinOutputVelocity(ElevatorConfig.minVel, ElevatorConfig.smartMotionSlot);
-    elevatorPIDController.setSmartMotionMaxAccel(ElevatorConfig.maxAcc, ElevatorConfig.smartMotionSlot);
-    elevatorPIDController.setSmartMotionAllowedClosedLoopError(ElevatorConfig.allowedErr, ElevatorConfig.smartMotionSlot);
+        elevatorPIDController.setP(ElevatorConfig.kP);
+        elevatorPIDController.setI(ElevatorConfig.kI);
+        elevatorPIDController.setD(ElevatorConfig.kD);
+        elevatorPIDController.setIZone(ElevatorConfig.kIz);
+        elevatorPIDController.setFF(ElevatorConfig.kFF);
+        elevatorPIDController.setOutputRange(ElevatorConfig.kMinOutput, ElevatorConfig.kMaxOutput);
 
-  }
 
-  @Override
-  public void periodic() {
-    
-  }
+        elevatorPIDController.setSmartMotionMaxVelocity(ElevatorConfig.maxVel, ElevatorConfig.smartMotionSlot);
+        elevatorPIDController.setSmartMotionMinOutputVelocity(ElevatorConfig.minVel, ElevatorConfig.smartMotionSlot);
+        elevatorPIDController.setSmartMotionMaxAccel(ElevatorConfig.maxAcc, ElevatorConfig.smartMotionSlot);
+        elevatorPIDController.setSmartMotionAllowedClosedLoopError(ElevatorConfig.allowedErr,
+                ElevatorConfig.smartMotionSlot);
 
-  private void configureElevatorMotor() {
-    elevatorSpark.setInverted(ElevatorConfig.kElevatorMotorInverted);
-}
+    }
 
-  public void setElevatorOuput(double output) {
-      elevatorSpark.set(output);
-  }
+    @Override
+    public void periodic() {
+//        System.out.println("[Elevator] pos: " + elevatorEncoder.getPosition() + ", vel: " + elevatorEncoder.getVelocity());
+    }
 
-private void configureElevatorSensors() {
-   elevatorEncoder.setInverted(ElevatorConfig.kElevatorEncoderInverted);
-}
+    private void configureElevatorMotor() {
+        elevatorSpark.setInverted(ElevatorConfig.kElevatorMotorInverted);
+    }
 
-  public void resetElevator(){ 
-    elevatorPIDController.setReference(0, CANSparkMax.ControlType.kSmartMotion);
-  }
+    public void setElevatorOuput(double output) {
+//        System.out.println(output);
+        elevatorSpark.set(output);
+    }
 
-  public double getElevatorPosition() {
-    return elevatorEncoder.getPosition();
-  }
+    private void configureElevatorSensors() {
+        elevatorEncoder.setInverted(ElevatorConfig.kElevatorEncoderInverted);
+    }
 
-  public void setElevatorSetpoint(ElevatorPosition pos) {
-    elevatorPIDController.setReference(pos.getElevatorPos(), CANSparkMax.ControlType.kSmartMotion);
-  }
+    public void resetElevator() {
+        elevatorPIDController.setReference(0, CANSparkMax.ControlType.kSmartMotion);
+    }
 
-  
+    public double getElevatorPosition() {
+        return elevatorEncoder.getPosition();
+    }
+
+    public void setElevatorSetpoint(ElevatorPosition pos) {
+        elevatorPIDController.setReference(pos.getElevatorPos(), CANSparkMax.ControlType.kSmartMotion);
+    }
+
+    public void resetEncoder() {
+        elevatorEncoder.setPosition(0);
+    }
+
+
 }
