@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.SpectrumLib.gamepads.Gamepad;
 import frc.robot.RobotContainer;
-import frc.robot.intake.IntakeConfig;
 import frc.robot.intake.commands.*;
 
 public class DriverGamepad extends Gamepad {
@@ -19,14 +18,8 @@ public class DriverGamepad extends Gamepad {
         gamepad.startButton.onTrue(new InstantCommand(() -> RobotContainer.drivetrain.zeroGyro()));
 
         // Intake input
-        gamepad.rightTriggerButton.whileTrue(new RunIntakeManual(RobotContainer.intakeRoller,
-                this::getRightTriggerRaw)
-        );
-        gamepad.leftTriggerButton.whileTrue(
-                new RunIntakeManual(RobotContainer.intakeRoller, () -> -getLeftTriggerRaw())
-        );
-
-//        shift().whileTrue(new RunPivotManual(RobotContainer.intakePivot, () -> gamepad.rightStick.getX()));
+        gamepad.rightTriggerButton.whileTrue(new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kCone));
+        gamepad.leftTriggerButton.whileTrue(new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kCube));
     }
 
     @Override

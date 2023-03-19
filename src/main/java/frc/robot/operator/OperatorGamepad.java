@@ -8,6 +8,7 @@ import frc.robot.claw.commands.ClawCommands;
 import frc.robot.elevator.commands.ElevatorCommands;
 import frc.robot.elevator.commands.RunElevatorManual;
 import frc.robot.intake.IntakeConfig;
+import frc.robot.intake.commands.RunIntake;
 import frc.robot.intake.commands.RunPivotManual;
 import frc.robot.intake.commands.SetPivotState;
 import frc.robot.intake.commands.ToggleHood;
@@ -19,23 +20,26 @@ public class OperatorGamepad extends Gamepad {
 
     @Override
     public void setupTeleopButtons() {
+        // Elevator commands
         gamepad.xButton.onTrue(ElevatorCommands.elevatorConeLow());
         gamepad.aButton.onTrue(ElevatorCommands.elevatorConeHigh());
         gamepad.bButton.onTrue(ElevatorCommands.elevatorCubeLow());
         gamepad.yButton.onTrue(ElevatorCommands.elevatorCubeHigh());
-
-        gamepad.rightBumper.onTrue(new ToggleHood(RobotContainer.intakeHood));
-        gamepad.Dpad.Up.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kHumanPlayer));
-        gamepad.Dpad.Down.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kScoreLow));
-        gamepad.Dpad.Left.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kStowed));
-        gamepad.Dpad.Right.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kDeployed));
+        gamepad.startButton.onTrue(new InstantCommand(() -> RobotContainer.elevator.resetEncoder()));
 
         gamepad.leftBumper.onTrue(ClawCommands.toggleClawState());
 
-        gamepad.startButton.onTrue(new InstantCommand(() -> RobotContainer.elevator.resetEncoder()));
+        // Intake commands
+        gamepad.rightBumper.onTrue(new ToggleHood(RobotContainer.intakeHood));
+        gamepad.Dpad.Up.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kHumanPlayer));
+        gamepad.Dpad.Down.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kDeployed));
+        gamepad.Dpad.Left.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kStowed));
+        gamepad.Dpad.Right.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kScoreLow));
+        gamepad.leftTriggerButton.whileTrue(new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kOuttake));
 
+        // Manual overrides
         shift().whileTrue(new RunElevatorManual(RobotContainer.elevator, () -> -gamepad.rightStick.getY()));
-        shift().whileTrue(new RunPivotManual(RobotContainer.intakePivot, () -> gamepad.leftStick.getX()));
+        shift().whileTrue(new RunPivotManual(RobotContainer.intakePivot, () -> -gamepad.leftStick.getX()));
     }
 
     @Override
@@ -47,6 +51,6 @@ public class OperatorGamepad extends Gamepad {
     }
 
     private Trigger shift() {
-        return gamepad.leftTriggerButton;
+        return gamepad.rightTriggerButton;
     }
 }
