@@ -6,7 +6,7 @@ import frc.robot.intake.IntakeRoller;
 
 public class RunIntake extends CommandBase {
     public enum Mode {
-        kCube(IntakeConfig.kCubeProfile), kCone(IntakeConfig.kConeProfile);
+        kCube(IntakeConfig.kCubeProfile), kCone(IntakeConfig.kConeProfile), kOuttake(IntakeConfig.kOuttake);
 
         Mode(IntakeConfig.IntakeProfile profile) {
             kProfile = profile;
