@@ -1,9 +1,8 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.intake.IntakeHood;
-import org.photonvision.PhotonCamera;
 
-import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import frc.robot.driver.DriverGamepad;
 import frc.robot.intake.IntakePivot;
 import frc.robot.intake.IntakeRoller;
@@ -11,16 +10,13 @@ import frc.robot.intake.commands.HoldPivot;
 import frc.robot.operator.OperatorGamepad;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.SwerveDrivetrainConstants;
 import frc.robot.autos.AutonMaster;
 import frc.robot.claw.Claw;
-import frc.robot.claw.ClawConfig.ClawState;
 import frc.robot.drivetrain.SwerveDrivetrain;
 import frc.robot.drivetrain.commands.TeleopDrive;
 import frc.robot.elevator.Elevator;
-import frc.robot.vision.PoseEstimator;
 
 
 public class RobotContainer {
@@ -87,6 +83,8 @@ public class RobotContainer {
     }
 
     public void reset() {
+        CommandScheduler.getInstance().clearButtons();
+        CommandScheduler.getInstance().getActiveButtonLoop().clear();
         driverGamepad.resetConfig();
         operatorGamepad.resetConfig();
     }
