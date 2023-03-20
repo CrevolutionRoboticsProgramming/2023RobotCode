@@ -4,6 +4,7 @@
 
 package frc.robot.autos;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import org.littletonrobotics.junction.Logger;
 
 import com.pathplanner.lib.auto.PIDConstants;
@@ -53,7 +54,7 @@ public class AutoBalancing extends CommandBase {
 
     output = MathUtil.clamp(balanceController.calculate(currentAngle, BALANCE_GOAL), -MAX_OUTPUT, MAX_OUTPUT);
 
-    mSwerveDrivetrain.drive(new Translation2d(-output, 0), 0, true, true);
+    mSwerveDrivetrain.drive(new Translation2d(-output, 0), Rotation2d.fromRadians(0), new Translation2d(0, 0), true, true);
 
     System.out.println("Current Angle " + currentAngle + " Output " + output); 
     Logger.getInstance().recordOutput("AutoBalance/Current Angle", currentAngle);

@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.SpectrumLib.gamepads.Gamepad;
 import frc.robot.RobotContainer;
+import frc.robot.drivetrain.commands.DrivetrainCommands;
 import frc.robot.intake.commands.*;
 
 public class DriverGamepad extends Gamepad {
@@ -19,10 +20,21 @@ public class DriverGamepad extends Gamepad {
     public void setupTeleopButtons() {
         // Drivetrain Input
         gamepad.startButton.onTrue(new InstantCommand(() -> RobotContainer.drivetrain.zeroGyro()));
+        gamepad.rightStickButton.toggleOnTrue(DrivetrainCommands.driveWithIntakeRotation(
+                this::getDriveTranslationX,
+                this::getDriveTranslationY,
+                this::getDriveRotation
+        ));
+        gamepad.leftStickButton.toggleOnTrue(DrivetrainCommands.driveFieldOrientedSlow(
+                this::getDriveTranslationX,
+                this::getDriveTranslationY,
+                this::getDriveRotation
+        ));
 
         // Intake input
         gamepad.rightTriggerButton.whileTrue(new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kCone));
         gamepad.leftTriggerButton.whileTrue(new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kCube));
+
     }
 
     @Override

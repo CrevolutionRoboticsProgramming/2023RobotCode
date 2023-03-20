@@ -3,7 +3,6 @@ package frc.robot.drivetrain.commands;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.SwerveDrivetrainConstants;
 import frc.robot.drivetrain.SwerveDrivetrain;
 
 import java.util.function.Supplier;
@@ -34,8 +33,8 @@ public class TeleopDrive extends CommandBase {
 
     @Override
     public void execute() {
-        final var translation = translationSupplier.get().times(SwerveDrivetrainConstants.MAX_SPEED);
-        final var rotation = rotationSupplier.get().times(SwerveDrivetrainConstants.MAX_ANGULAR_VELOCITY);
+        final var translation = translationSupplier.get();
+        final var rotation = rotationSupplier.get();
 
         drivetrain.drive(translation, rotation, rotationOffset, isFieldRelative, isOpenLoop);
     }
