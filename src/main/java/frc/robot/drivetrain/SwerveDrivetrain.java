@@ -86,47 +86,28 @@ public class SwerveDrivetrain extends SubsystemBase {
         m_swerveOdometry = new SwerveDriveOdometry(SwerveDrivetrainConstants.SWERVE_DRIVE_KINEMATICS, getYaw(), getModulePositions());
     }
 
-    public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
+    public void drive(Translation2d translation, Rotation2d rotation, Translation2d rotationOffset,
+                      boolean isFieldRelative, boolean isOpenLoop) {
         final SwerveModuleState[] swerveModuleStates;
-        
-        if (fieldRelative) {
+        if (isFieldRelative) {
             swerveModuleStates = SwerveDrivetrainConstants.SWERVE_DRIVE_KINEMATICS.toSwerveModuleStates(
-                    ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(), translation.getY(), rotation, getYaw())
+                    ChassisSpeeds.fromFieldRelativeSpeeds(
+                            translation.getX(),
+                            translation.getY(),
+                            rotation.getRadians(),
+                            getYaw()
+                    ),
+                    new Translation2d(SwerveDrivetrainConstants.DRIVETRAIN_ACTUAL_LENGTH / 2.0, 0)
             );
         } else {
             swerveModuleStates = SwerveDrivetrainConstants.SWERVE_DRIVE_KINEMATICS.toSwerveModuleStates(
-                    new ChassisSpeeds(translation.getX(), translation.getY(), rotation)
+                    new ChassisSpeeds(translation.getX(), translation.getY(), rotation.getRadians()),
+                    new Translation2d(SwerveDrivetrainConstants.DRIVETRAIN_ACTUAL_LENGTH / 2.0, 0)
             );
         }
 
-        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, SwerveDrivetrainConstants.MAX_SPEED);
+        setModuleStates(swerveModuleStates);
 
-        for(var module : m_swerveModules){
-            module.setDesiredState(swerveModuleStates[module.m_moduleNumber], isOpenLoop);
-        }
-        setpointState = swerveModuleStates;
-    }
-
-    public void driveCustomCenterOfRotation(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
-        final SwerveModuleState[] swerveModuleStates;
-        
-        if (fieldRelative) {
-            swerveModuleStates = SwerveDrivetrainConstants.SWERVE_DRIVE_KINEMATICS.toSwerveModuleStates(
-                    ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(), translation.getY(), rotation, getYaw()), 
-                    new Translation2d(SwerveDrivetrainConstants.DRIVETRAIN_ACTUAL_LENGTH/2.0, 0)
-            );
-        } else {
-            swerveModuleStates = SwerveDrivetrainConstants.SWERVE_DRIVE_KINEMATICS.toSwerveModuleStates(
-                    new ChassisSpeeds(translation.getX(), translation.getY(), rotation),
-                    new Translation2d(SwerveDrivetrainConstants.DRIVETRAIN_ACTUAL_LENGTH/2.0, 0)
-            );
-        }
-
-        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, SwerveDrivetrainConstants.MAX_SPEED);
-
-        for(var module : m_swerveModules){
-            module.setDesiredState(swerveModuleStates[module.m_moduleNumber], isOpenLoop);
-        }
         setpointState = swerveModuleStates;
     }
 
@@ -148,7 +129,7 @@ public class SwerveDrivetrain extends SubsystemBase {
     }
 
     public void stopSwerve() {
-        drive(new Translation2d(0 ,0), 0, true, true);
+        drive(new Translation2d(0, 0), Rotation2d.fromRadians(0), new Translation2d(0, 0), true, true);
     }
 
     public ChassisSpeeds getChassisSpeeds(double vxMetersPerSecond, double vyMetersPerSecond, double omegaRadiansPerSecond, Rotation2d robotAngle) {

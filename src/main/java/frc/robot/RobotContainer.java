@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.drivetrain.commands.DrivetrainCommands;
 import frc.robot.intake.IntakeHood;
 
 import frc.robot.driver.DriverGamepad;
@@ -88,13 +89,10 @@ public class RobotContainer {
     private void setDefaultCommands() {
         intakePivot.setDefaultCommand(new HoldPivot(intakePivot));
 
-        drivetrain.setDefaultCommand(new TeleopDrive(
-                drivetrain,
+        drivetrain.setDefaultCommand(DrivetrainCommands.driveFieldOriented(
                 driverGamepad::getDriveTranslationX,
                 driverGamepad::getDriveTranslationY,
-                driverGamepad::getDriveRotation,
-                true,
-                false
+                driverGamepad::getDriveRotation
         ));
     }
 }
