@@ -10,6 +10,9 @@ import frc.robot.intake.commands.*;
 public class DriverGamepad extends Gamepad {
     public DriverGamepad() {
         super("DriverController", DriverConfig.kDriverPort);
+
+        gamepad.rightStick.setDeadband(DriverConfig.kRightStickXDeadzone, DriverConfig.kRightStickYDeadzone);
+        gamepad.leftStick.setDeadband(DriverConfig.kLeftStickXDeadzone, DriverConfig.kLeftStickYDeadzone);
     }
 
     @Override
@@ -56,5 +59,17 @@ public class DriverGamepad extends Gamepad {
 
     public double getLeftTriggerRaw() {
         return gamepad.getRawAxis(XboxController.Axis.kLeftTrigger.value);
+    }
+
+    public double getDriveTranslationX() {
+        return gamepad.leftStick.getX();
+    }
+
+    public double getDriveTranslationY() {
+        return gamepad.leftStick.getY();
+    }
+
+    public double getDriveRotation() {
+        return gamepad.rightStick.getX();
     }
 }

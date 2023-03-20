@@ -30,7 +30,7 @@ public class RobotContainer {
 
     /*Declare Subsystems*/
     public static SwerveDrivetrain drivetrain;
-//    public static PoseEstimator poseEstimator;
+    //    public static PoseEstimator poseEstimator;
     public static IntakePivot intakePivot;
     public static IntakeRoller intakeRoller;
     public static IntakeHood intakeHood;
@@ -51,15 +51,11 @@ public class RobotContainer {
         elevator = new Elevator();
         claw = new Claw();
 
-    
 
         // Gamepad initialization
         driverGamepad = new DriverGamepad();
         operatorGamepad = new OperatorGamepad();
 
-        drivetrain.setDefaultCommand(new TeleopDrive(drivetrain, driverControllerRetro,
-                XboxController.Axis.kLeftY.value, XboxController.Axis.kLeftX.value, XboxController.Axis.kRightX.value
-                , SwerveDrivetrainConstants.FIELD_RELATIVE, SwerveDrivetrainConstants.OPEN_LOOP));
 
 //        autoChooser = getAutonChooser();
 //        SmartDashboard.putData(autoChooser);
@@ -91,5 +87,14 @@ public class RobotContainer {
 
     private void setDefaultCommands() {
         intakePivot.setDefaultCommand(new HoldPivot(intakePivot));
+
+        drivetrain.setDefaultCommand(new TeleopDrive(
+                drivetrain,
+                driverGamepad::getDriveTranslationX,
+                driverGamepad::getDriveTranslationY,
+                driverGamepad::getDriveRotation,
+                true,
+                false
+        ));
     }
 }

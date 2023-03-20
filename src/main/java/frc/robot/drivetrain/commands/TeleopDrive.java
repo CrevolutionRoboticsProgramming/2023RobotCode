@@ -1,57 +1,42 @@
 package frc.robot.drivetrain.commands;
 
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.JoystickConstants;
 import frc.robot.Constants.SwerveDrivetrainConstants;
 import frc.robot.CrevoLib.io.JoystickMods;
 import frc.robot.drivetrain.SwerveDrivetrain;
 
-public class TeleopDrive extends CommandBase{
-    private double m_rotation;
-    private Translation2d m_translation;
-    private boolean m_fieldRelative;
-    private boolean m_openLoop;
-    
-    private SwerveDrivetrain m_swerveDrivetrain;
-    private XboxController m_driverController;
-    private int m_driveAxis;
-    private int m_strafeAxis;
-    private int m_rotationAxis;
+import java.util.function.DoubleSupplier;
 
-    public TeleopDrive(SwerveDrivetrain swerveDrivetrain, XboxController driverController, int driveAxis, int strafeAxis, int rotationAxis, boolean fieldRelative, boolean openLoop) {
-        m_swerveDrivetrain = swerveDrivetrain;
-        addRequirements(m_swerveDrivetrain);
+public class TeleopDrive extends CommandBase {
+    private final SwerveDrivetrain drivetrain;
+    private final DoubleSupplier txSupplier, tySupplier, rSupplier;
+    private final boolean isFieldRelative;
+    private final boolean isOpenLoop;
 
-        m_driverController = driverController;
-        m_driveAxis = driveAxis;
-        m_strafeAxis = strafeAxis;
-        m_rotationAxis = rotationAxis;
-        m_fieldRelative = fieldRelative;
-        m_openLoop = openLoop;
+    public TeleopDrive(SwerveDrivetrain drivetrain, DoubleSupplier translationX, DoubleSupplier translationY,
+                       DoubleSupplier rotation, boolean isFieldRelative, boolean isOpenLoop) {
+        this.drivetrain = drivetrain;
+        txSupplier = translationX;
+        tySupplier = translationY;
+        rSupplier = rotation;
+        this.isFieldRelative = isFieldRelative;
+        this.isOpenLoop = isOpenLoop;
+
+        addRequirements(this.drivetrain);
     }
 
     @Override
     public void execute() {
-      double yAxis = m_driverController.getRawAxis(m_driveAxis);
-      double xAxis = m_driverController.getRawAxis(m_strafeAxis);
-      double rAxis = m_driverController.getRawAxis(m_rotationAxis);
-      
-      /* Deadbands */
-      yAxis = (Math.abs(yAxis) < JoystickConstants.STICK_DEADBAND) ? 0 : yAxis;
-      xAxis = (Math.abs(xAxis) < JoystickConstants.STICK_DEADBAND) ? 0 : xAxis;
-      rAxis = (Math.abs(rAxis) < JoystickConstants.STICK_DEADBAND) ? 0 : rAxis;
+        final var translation = new Translation2d(
+                tySupplier.getAsDouble(),
+                txSupplier.getAsDouble()
+        ).times(SwerveDrivetrainConstants.MAX_SPEED);
 
-      /*Softer Movement, Greater Accuracy, Interpolation Method */
-      yAxis = JoystickMods.interpolateJoystickAxis(yAxis, JoystickConstants.STICK_DEADBAND);
-      xAxis = JoystickMods.interpolateJoystickAxis(xAxis, JoystickConstants.STICK_DEADBAND);
-      rAxis = JoystickMods.interpolateJoystickAxis(rAxis, JoystickConstants.STICK_DEADBAND);
+        final var rotation = rSupplier.getAsDouble() * SwerveDrivetrainConstants.MAX_ANGULAR_VELOCITY;
 
-      m_translation = new Translation2d(yAxis, xAxis).times(SwerveDrivetrainConstants.MAX_SPEED);
-      m_rotation = rAxis * SwerveDrivetrainConstants.MAX_ANGULAR_VELOCITY;
-      m_swerveDrivetrain.drive(m_translation, m_rotation, m_fieldRelative, m_openLoop);
-  }
+        drivetrain.drive(translation, rotation, isFieldRelative, isOpenLoop);
+    }
 
 }
