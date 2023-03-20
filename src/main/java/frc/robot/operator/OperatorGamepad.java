@@ -35,7 +35,7 @@ public class OperatorGamepad extends Gamepad {
         gamepad.Dpad.Down.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kDeployed));
         gamepad.Dpad.Left.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kStowed));
         gamepad.Dpad.Right.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kScoreLow));
-        gamepad.leftTriggerButton.whileTrue(new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kOuttake));
+        gamepad.leftTriggerButton.whileTrue(new RunIntake(RobotContainer.intakeRoller, () -> RunIntake.Mode.kOuttake));
 
         // Manual overrides
         shift().whileTrue(new RunElevatorManual(RobotContainer.elevator, () -> -gamepad.rightStick.getY()));

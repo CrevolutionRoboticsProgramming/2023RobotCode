@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.intake.IntakeConfig;
 import frc.robot.intake.IntakeRoller;
 
+import java.util.function.Supplier;
+
 public class RunIntake extends CommandBase {
     public enum Mode {
         kCube(IntakeConfig.kCubeProfile), kCone(IntakeConfig.kConeProfile), kOuttake(IntakeConfig.kOuttake);
@@ -16,24 +18,40 @@ public class RunIntake extends CommandBase {
     }
 
     private final IntakeRoller roller;
-    private final Mode mode;
+    private final Supplier<Mode> mode;
 
-    public RunIntake(IntakeRoller roller, Mode mode) {
+    private Mode lastMode;
+
+    public RunIntake(IntakeRoller roller, Supplier<Mode> modeSupplier) {
         this.roller = roller;
-        this.mode = mode;
+        this.mode = modeSupplier;
 
         addRequirements(roller);
     }
 
     @Override
     public String getName() {
-        return "RunIntake[" + mode.name() + "]";
+        return "RunIntake";
     }
 
     @Override
     public void initialize() {
-        roller.setRollerProfile(mode.kProfile);
+        lastMode = mode.get();
+        roller.setRollerProfile(lastMode.kProfile);
         roller.setRollerOutput(1);
+
+        System.out.println(getName() + ": setting mode to " + lastMode.name());
+    }
+
+    @Override
+    public void execute() {
+        final var currentMode = mode.get();
+        if (lastMode != currentMode) {
+            roller.setRollerProfile(currentMode.kProfile);
+            lastMode = currentMode;
+
+            System.out.println(getName() + ": setting mode to " + lastMode.name());
+        }
     }
 
     @Override

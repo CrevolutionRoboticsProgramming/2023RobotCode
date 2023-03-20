@@ -8,23 +8,14 @@ a modifier key (a la shift), other buttons / axis can then be mapped to differen
 
 ## Base Layer
 
-| Input                 | Description                                |
-|-----------------------|:-------------------------------------------|
-| A                     | Reorient w/ intake facing toward driver    |
-| B                     | N/A                                        |
-| X                     | Reorient w/ intake facing away from driver |
-| Y                     | N/A                                        |
-| DPad Up               | N/A                                        |
-| DPad Down             | N/A                                        |
-| DPad Left             | N/A                                        |
-| DPad Right            | N/A                                        |
-| Start                 | Reset field orientation                    |
-| Select                | N/A                                        |
-| Left Bumper           | Virtual gear shift                         |
-| Right Bumper          | Toggle intake position                     |
-| Left Trigger          | Intake cube                                |
-| Right Trigger         | Intake cone                                |
-| Left Joystick Button  | Slow-mode toggle                           |
-| Right Joystick Button | Intake-rotate mode toggle                  |
-| Left Joystick         | Drivetrain translation                     |
-| Right Joystick        | Drivetrain rotation                        |
+| Input                 | Description                                                                  |
+|-----------------------|:-----------------------------------------------------------------------------|
+| A                     | Reorient w/ intake facing toward driver                                      |
+| X                     | Reorient w/ intake facing away from driver                                   |
+| Start                 | Reset field orientation                                                      |
+| Left Bumper           |                                                                              |
+| Right Bumper          | Deploy intake                                                                |
+| Left Trigger          | Slow mode                                                                    |
+| Right Trigger         | Parital: intake cube, Full: intake cone, Any: switch to intake rotation axis |
+| Left Joystick         | Drivetrain translation                                                       |
+| Right Joystick        | Drivetrain rotation                                                          |
