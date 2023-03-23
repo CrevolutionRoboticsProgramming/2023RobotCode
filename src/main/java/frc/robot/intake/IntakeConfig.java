@@ -58,6 +58,7 @@ public class IntakeConfig {
     public static final int kRollerSparkID = 46;
     public static final int kHoodForwardChannel = 0;
     public static final int kHoodReverseChannel = 1;
+    public static final int kLimitSwitchID = 0;
 
     public static final boolean kPivotMotorInverted = false;
     public static final boolean kRollerMotorInverted = false;
@@ -92,6 +93,7 @@ public class IntakeConfig {
 
     // Tensioning constants
     public static final double kTensionOutput = -0.05;
+    public static final double kTensionFindOutput = -0.15;
 
     public static final int kDefaultContinuousCurrentLimit = 35;
     public static final int kDefaultPeakCurrentLimit = 60;

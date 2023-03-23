@@ -38,7 +38,7 @@ public class HoldPivot extends CommandBase {
     @Override
     public void execute() {
         if (state == IntakeConfig.PivotState.kDeployed) {
-            pivot.setOutput(IntakeConfig.kTensionOutput);
+            pivot.setOutput(pivot.getLimitSwitchState() ? IntakeConfig.kTensionOutput : IntakeConfig.kTensionFindOutput);
         }
     }
 

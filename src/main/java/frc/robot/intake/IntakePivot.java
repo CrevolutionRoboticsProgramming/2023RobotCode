@@ -3,18 +3,22 @@ package frc.robot.intake;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.SparkMaxAbsoluteEncoder;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.CrevoLib.math.Conversions;
 
 public class IntakePivot extends SubsystemBase {
     private final CANSparkMax spark;
     private final SparkMaxAbsoluteEncoder encoder;
+    private final DigitalInput limitSwitch;
 
     private IntakeConfig.PivotState state;
 
     public IntakePivot() {
         spark = new CANSparkMax(IntakeConfig.kPivotSparkID, CANSparkMaxLowLevel.MotorType.kBrushless);
         encoder = spark.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
+        limitSwitch = new DigitalInput(IntakeConfig.kLimitSwitchID);
+
         state = IntakeConfig.PivotState.kUnspecified;
 
         configureMotor();
@@ -77,5 +81,9 @@ public class IntakePivot extends SubsystemBase {
 
     public void setState(IntakeConfig.PivotState state) {
         this.state = state;
+    }
+
+    public boolean getLimitSwitchState() {
+        return limitSwitch.get();
     }
 }
