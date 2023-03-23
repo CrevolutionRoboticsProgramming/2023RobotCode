@@ -24,10 +24,10 @@ public class Claw extends SubsystemBase {
     }
 
 
-  public void setClawState(ClawConfig.ClawState state) {
-    clawState = state;
-    clawSolenoid.set(state.state);
-  }
+    public void setClawState(ClawConfig.ClawState state) {
+        clawState = state;
+        clawSolenoid.set(state.state);
+    }
 
     public void toggleClawState() {
         // switch (clawState) {
@@ -41,10 +41,10 @@ public class Claw extends SubsystemBase {
 
         Value toggleValue = clawSolenoid.get() == Value.kForward ? Value.kReverse : Value.kForward;
         clawSolenoid.set(toggleValue);
-        
-        
+
+
         // System.out.println("Setting claw state: " + clawState.name());
 
-       
+
     }
 }

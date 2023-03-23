@@ -52,4 +52,8 @@ public class Conversions {
     public static double degreesToRadians(double degrees) {
         return Math.PI * degrees / 180.0;
     }
+
+    public static double feetToMeters(double feet) {
+        return feet * 0.3048;
+    }
 }

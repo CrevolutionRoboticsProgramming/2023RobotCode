@@ -4,7 +4,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.SpectrumLib.gamepads.Gamepad;
 import frc.robot.RobotContainer;
+import frc.robot.claw.ClawConfig;
 import frc.robot.claw.commands.ClawCommands;
+import frc.robot.elevator.ElevatorConfig;
 import frc.robot.elevator.commands.ElevatorCommands;
 import frc.robot.elevator.commands.RunElevatorManual;
 import frc.robot.intake.IntakeConfig;
@@ -21,13 +23,12 @@ public class OperatorGamepad extends Gamepad {
     @Override
     public void setupTeleopButtons() {
         // Elevator commands
-        gamepad.xButton.onTrue(ElevatorCommands.elevatorConeLow());
-        gamepad.aButton.onTrue(ElevatorCommands.elevatorConeHigh());
-        gamepad.bButton.onTrue(ElevatorCommands.elevatorCubeLow());
-        gamepad.yButton.onTrue(ElevatorCommands.elevatorCubeHigh());
-        gamepad.startButton.onTrue(new InstantCommand(() -> RobotContainer.elevator.resetEncoder()));
+        gamepad.aButton.onTrue(ElevatorCommands.setState(ElevatorConfig.ElevatorState.kZeroGoal));
+        gamepad.xButton.onTrue(ElevatorCommands.setState(ElevatorConfig.ElevatorState.kMid));
+        gamepad.yButton.onTrue(ElevatorCommands.setState(ElevatorConfig.ElevatorState.kHighGoal));
+        gamepad.startButton.onTrue(new InstantCommand(() -> RobotContainer.elevator.zero()));
 
-        gamepad.leftBumper.onTrue(ClawCommands.toggleClawState());
+        gamepad.leftBumper.onTrue(ClawCommands.toggleState());
 
         // Intake commands
         gamepad.rightBumper.onTrue(new ToggleHood(RobotContainer.intakeHood));
@@ -38,7 +39,7 @@ public class OperatorGamepad extends Gamepad {
         gamepad.leftTriggerButton.whileTrue(new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kOuttake));
 
         // Manual overrides
-        shift().whileTrue(new RunElevatorManual(RobotContainer.elevator, () -> -gamepad.rightStick.getY()));
+        shift().whileTrue(new RunElevatorManual(RobotContainer.elevator, () -> gamepad.rightStick.getY()));
         shift().whileTrue(new RunPivotManual(RobotContainer.intakePivot, () -> -gamepad.leftStick.getX()));
     }
 

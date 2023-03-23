@@ -1,6 +1,9 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.claw.ClawConfig;
+import frc.robot.claw.commands.ClawCommands;
+import frc.robot.elevator.commands.ElevatorCommands;
 import frc.robot.intake.IntakeHood;
 
 import frc.robot.driver.DriverGamepad;
@@ -64,6 +67,7 @@ public class RobotContainer {
 //        autoChooser = getAutonChooser();
 //        SmartDashboard.putData(autoChooser);
 
+        setDefaultCommands();
     }
 
     /**
@@ -91,5 +95,7 @@ public class RobotContainer {
 
     private void setDefaultCommands() {
         intakePivot.setDefaultCommand(new HoldPivot(intakePivot));
+        elevator.setDefaultCommand(ElevatorCommands.holdState());
+//        claw.setDefaultCommand(ClawCommands.setState(ClawConfig.ClawState.kClosed));
     }
 }

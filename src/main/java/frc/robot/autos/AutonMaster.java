@@ -3,31 +3,22 @@ package frc.robot.autos;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.littletonrobotics.junction.Logger;
-
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.*;
-import frc.robot.Constants.SwerveDrivetrainConstants;
 import frc.robot.intake.IntakeConfig.PivotState;
-import frc.robot.intake.commands.IntakeCommands;
 import frc.robot.intake.commands.RunIntake;
 import frc.robot.intake.commands.SetPivotState;
-import frc.robot.autos.AutoBalancing;
 import frc.robot.claw.ClawConfig.ClawState;
 import frc.robot.claw.commands.ClawCommands;
-import frc.robot.elevator.ElevatorConfig.ElevatorPosition;
+import frc.robot.elevator.ElevatorConfig.ElevatorState;
 import frc.robot.elevator.commands.SetElevatorState;
 
 public final class AutonMaster {
@@ -50,18 +41,18 @@ public final class AutonMaster {
 
         Map.entry("ScoreHigh", 
         new SequentialCommandGroup(
-            ClawCommands.setClawState(ClawState.kClosed),
-            new SetElevatorState(RobotContainer.elevator, ElevatorPosition.kHigh)
+            ClawCommands.setState(ClawState.kClosed),
+            new SetElevatorState(RobotContainer.elevator, ElevatorState.kHigh)
         )),
 
         Map.entry("ScoreMid",
             new SequentialCommandGroup(
-                ClawCommands.setClawState(ClawState.kClosed),
-                new SetElevatorState(RobotContainer.elevator, ElevatorPosition.kMid)
+                ClawCommands.setState(ClawState.kClosed),
+                new SetElevatorState(RobotContainer.elevator, ElevatorState.kMid)
             )
         ),
         
-        Map.entry("ElevatorDown", new SetElevatorState(RobotContainer.elevator, ElevatorPosition.kZero)),
+        Map.entry("ElevatorDown", new SetElevatorState(RobotContainer.elevator, ElevatorState.kZero)),
 
         Map.entry("AutoBalance", new AutoBalancing(RobotContainer.drivetrain)),
         

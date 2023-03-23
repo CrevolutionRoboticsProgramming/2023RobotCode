@@ -4,130 +4,94 @@
 
 package frc.robot.elevator;
 
-import com.revrobotics.AlternateEncoderType;
-import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.SparkMaxAlternateEncoder;
-import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.SparkMaxRelativeEncoder;
-import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.elevator.ElevatorConfig.ElevatorPosition;
-import frc.robot.elevator.ElevatorConfig;
+import frc.robot.elevator.ElevatorConfig.ElevatorState;
 
 public class Elevator extends SubsystemBase {
-    private final CANSparkMax elevatorSpark;
-    private final RelativeEncoder elevatorEncoder;
-    private final SparkMaxPIDController elevatorPIDController;
+    private final CANSparkMax spark;
+    private final RelativeEncoder encoder;
     private final DigitalInput lowerLimitSwitch, upperLimitSwitch;
 
-    private ElevatorConfig.ElevatorPosition elevatorState;
+    private ElevatorState currentState;
 
     public Elevator() {
-        elevatorSpark = new CANSparkMax(ElevatorConfig.kElevatorSparkID, MotorType.kBrushless);
-        elevatorEncoder = elevatorSpark.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, 8192);
-
-        elevatorSpark.setIdleMode(CANSparkMax.IdleMode.kBrake);
-
-        elevatorState = ElevatorPosition.kUnspecified;
-
+        // Setup devices
+        spark = new CANSparkMax(ElevatorConfig.kElevatorSparkID, MotorType.kBrushless);
+        encoder = spark.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, 8192);
         lowerLimitSwitch = new DigitalInput(ElevatorConfig.kLowerLimitSwitchPort);
         upperLimitSwitch = new DigitalInput(ElevatorConfig.kUpperLimitSwitchPort);
 
-        configureElevatorMotor();
-        configureElevatorSensors();
-        elevatorSpark.restoreFactoryDefaults();
+        configMotors();
+        configSensors();
 
-        elevatorPIDController = elevatorSpark.getPIDController();
+        currentState = ElevatorState.kUnspecified;
+    }
 
-        elevatorPIDController.setP(ElevatorConfig.kP);
-        elevatorPIDController.setI(ElevatorConfig.kI);
-        elevatorPIDController.setD(ElevatorConfig.kD);
-        elevatorPIDController.setIZone(ElevatorConfig.kIz);
-        elevatorPIDController.setFF(ElevatorConfig.kFF);
-        elevatorPIDController.setOutputRange(ElevatorConfig.kMinOutput, ElevatorConfig.kMaxOutput);
+    private void configMotors() {
+        spark.restoreFactoryDefaults();
+        spark.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        spark.setInverted(ElevatorConfig.kElevatorMotorInverted);
+    }
 
+    private void configSensors() {
+        encoder.setInverted(ElevatorConfig.kElevatorEncoderInverted);
+    }
 
-        elevatorPIDController.setSmartMotionMaxVelocity(ElevatorConfig.maxVel, ElevatorConfig.smartMotionSlot);
-        elevatorPIDController.setSmartMotionMinOutputVelocity(ElevatorConfig.minVel, ElevatorConfig.smartMotionSlot);
-        elevatorPIDController.setSmartMotionMaxAccel(ElevatorConfig.maxAcc, ElevatorConfig.smartMotionSlot);
-        elevatorPIDController.setSmartMotionAllowedClosedLoopError(ElevatorConfig.allowedErr,
-                ElevatorConfig.smartMotionSlot);
+    public void zero() {
+        encoder.setPosition(0);
+    }
 
+    public double getPositionMeters() {
+        return ElevatorUtils.rotationsToMeters(encoder.getPosition());
+    }
+
+    public double getVelocityMps() {
+        return ElevatorUtils.rotationsToMeters(encoder.getVelocity() / 60.0);
+    }
+
+    public boolean[] getLimitStates() {
+        return new boolean[]{!lowerLimitSwitch.get(), !upperLimitSwitch.get()};
+    }
+
+    public void setElevatorOutput(double output) {
+        final var switchStates = getLimitStates();
+        if(switchStates[0] && output < 0) {
+            spark.setVoltage(0);
+        }
+        else if(switchStates[1] && output > 0) {
+            spark.setVoltage(0);
+        }
+        else {
+            spark.setVoltage(output);
+        }
+    }
+
+    public void stop() {
+        spark.set(0);
+    }
+
+    public void setState(ElevatorState state) {
+        currentState = state;
+    }
+
+    public ElevatorState getState() {
+        return currentState;
     }
 
     @Override
     public void periodic() {
-       System.out.println("[Elevator] pos: " + elevatorEncoder.getPosition() + ", vel: " + elevatorEncoder.getVelocity());
+        final var states = getLimitStates();
+//        System.out.println("[Elevator] pos: " + getPositionMeters() + ", vel: " + getVelocityMps());
 
-       if(!lowerLimitSwitch.get() && elevatorState != ElevatorPosition.kZero) {
-            elevatorState = ElevatorPosition.kZero;
-            resetEncoder();
-       }
-       
-    }
-
-    private void configureElevatorMotor() {
-        elevatorSpark.setInverted(ElevatorConfig.kElevatorMotorInverted);
-    }
-
-    public boolean[] getElevatorLimitSwitchState() {
-        return new boolean[]{lowerLimitSwitch.get(),upperLimitSwitch.get()};
-    }
-
-    private void configureElevatorSensors() {
-        elevatorEncoder.setInverted(ElevatorConfig.kElevatorEncoderInverted);
-    }
-
-    public void resetElevator() {
-        elevatorPIDController.setReference(0, CANSparkMax.ControlType.kSmartMotion);
-    }
-
-    public double getElevatorPosition() {
-        return elevatorEncoder.getPosition();
-    }
-
-    public double getElevatorVelocity() {
-        return elevatorEncoder.getVelocity();
-    }
-
-    
-    public void stopElevator() {
-        elevatorSpark.set(0);
-    }
-
-    public void setElevatorOutput(double output) {
-        if(lowerLimitSwitch.get() && output < 0) {
-            elevatorSpark.set(0);
-            System.out.println("Can't go down, limit switch hit!");
-        }
-        else if(upperLimitSwitch.get() && output > 0) {
-            elevatorSpark.set(0);
-            System.out.println("Can't go up, limit switch hit!");
-        }
-        else {
-            elevatorSpark.set(output);
+        if (getLimitStates()[0]) {
+            currentState = ElevatorState.kZero;
+            zero();
         }
     }
-
-    public void setElevatorSetpoint(ElevatorPosition pos) {
-        elevatorPIDController.setReference(pos.targetPos, CANSparkMax.ControlType.kSmartMotion);
-    }
-
-    public void resetEncoder() {
-        elevatorEncoder.setPosition(0);
-    }   
-
-    public void setElevatorState(ElevatorConfig.ElevatorPosition state) {
-
-        this.elevatorState = state;
-    }
-
-
-
 }

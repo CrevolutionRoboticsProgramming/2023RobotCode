@@ -52,7 +52,7 @@ public class IntakePivot extends SubsystemBase {
      * @return angular velocity in rads / sec
      */
     public double getVelocityRps() {
-        return Conversions.rotationToRadians(encoder.getVelocity());
+        return Conversions.rotationToRadians(encoder.getVelocity() / 60.0);
     }
 
     public double getOutputCurrent() {
@@ -84,6 +84,11 @@ public class IntakePivot extends SubsystemBase {
     }
 
     public boolean getLimitSwitchState() {
-        return limitSwitch.get();
+        return !limitSwitch.get();
+    }
+
+    @Override
+    public void periodic() {
+        System.out.println("[pivot] pos (" + getAngleRads() + "), vel (" + getVelocityRps() + ")");
     }
 }

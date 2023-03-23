@@ -6,25 +6,25 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.elevator.Elevator;
 import frc.robot.elevator.ElevatorConfig;
-import frc.robot.elevator.ElevatorConfig.ElevatorPosition;
+import frc.robot.elevator.ElevatorConfig.ElevatorState;
 
 public class SetElevatorState extends CommandBase{
     private final Elevator elevator;
 
-    private final ElevatorConfig.ElevatorPosition targetElevatorState;
+    private final ElevatorState targetState;
 
     private TrapezoidProfile profile;
-    private final ElevatorFeedforward elevatorFFController;
-    private final PIDController elevatorPIDController;
+    private final ElevatorFeedforward ffController;
+    private final PIDController pidController;
 
     private Long startTs; 
 
-    public SetElevatorState(Elevator elevator, ElevatorConfig.ElevatorPosition targetElevatorState) {
+    public SetElevatorState(Elevator elevator, ElevatorState targetElevatorState) {
         this.elevator = elevator;
-        this.targetElevatorState = targetElevatorState;
+        this.targetState = targetElevatorState;
 
-        elevatorFFController = new ElevatorFeedforward(ElevatorConfig.elevkS,ElevatorConfig.elevkG, ElevatorConfig.elevkV, ElevatorConfig.elevkA);
-        elevatorPIDController = new PIDController(ElevatorConfig.kP, ElevatorConfig.kI, ElevatorConfig.kD);
+        ffController = new ElevatorFeedforward(ElevatorConfig.kS,ElevatorConfig.kG, ElevatorConfig.kV, ElevatorConfig.kA);
+        pidController = new PIDController(ElevatorConfig.kP, ElevatorConfig.kI, ElevatorConfig.kD);
         
         startTs = null;
 
@@ -33,9 +33,7 @@ public class SetElevatorState extends CommandBase{
 
     @Override
     public String getName() {
-        String elevStateName = targetElevatorState.name();
-        String output = "SetElevatorState[" + elevStateName + "]";
-        return output;
+        return "SetElevatorState[" + targetState.name() + "]";
     }
 
     @Override
@@ -56,35 +54,38 @@ public class SetElevatorState extends CommandBase{
 
         final var targetState = profile.calculate(duration);
 
-        final var ffOutput = elevatorFFController.calculate(targetState.velocity);
-        final var pidOutput = elevatorPIDController.calculate(elevator.getElevatorVelocity(), targetState.velocity);
+        final var ffOutput = ffController.calculate(targetState.velocity);
+        final var pidOutput = pidController.calculate(elevator.getVelocityMps(), targetState.velocity);
 
-        elevator.setElevatorOutput((ffOutput + pidOutput) / 12.0);
+        final var voltage = ffOutput + pidOutput;
+
+//        System.out.println("[" + getName() + "] velocity (" + elevator.getVelocityMps() + "), target (" + targetState.velocity + "), voltage (" + voltage + ")");
+        elevator.setElevatorOutput(ffOutput + pidOutput);
     }
 
 
     @Override
     public void end(boolean interrupted) {
         System.out.println(getName() + ": end");
-        boolean[] elevatorLimitSwitchStates = elevator.getElevatorLimitSwitchState();
+        boolean[] elevatorLimitSwitchStates = elevator.getLimitStates();
     
-        if(elevatorLimitSwitchStates[0]) {
-            elevator.setElevatorState(ElevatorPosition.kZero);
-        }
-        else if(elevatorLimitSwitchStates[1]) {
-            elevator.setElevatorState(ElevatorPosition.kHigh);
-        }
-        else {
-            elevator.setElevatorState(interrupted ? ElevatorPosition.kUnspecified : targetElevatorState);
+        if (elevatorLimitSwitchStates[0]) {
+            elevator.setState(ElevatorState.kZero);
+        } else if (elevatorLimitSwitchStates[1]) {
+            elevator.setState(ElevatorState.kHigh);
+        } else {
+            elevator.setState(interrupted ? ElevatorState.kUnspecified : targetState);
         }
 
-        elevator.stopElevator();
+        elevator.stop();
     }
 
     @Override
     public boolean isFinished() {
-        boolean[] elevatorLimitSwitchStates = elevator.getElevatorLimitSwitchState();
-        return ((elevatorLimitSwitchStates[1]) && elevator.getElevatorVelocity() < 0) || (profile != null && profile.isFinished(getElapsedTime()));
+        final var limitStates = elevator.getLimitStates();
+        return (limitStates[0] && elevator.getVelocityMps() < 0)
+                || (limitStates[1] && elevator.getVelocityMps() > 0)
+                || (profile != null && profile.isFinished(getElapsedTime()));
     }
 
     private double getElapsedTime() {
@@ -93,30 +94,12 @@ public class SetElevatorState extends CommandBase{
 
 
     private TrapezoidProfile generateElevatorProfile() {
-        // final var startPos = elevator.getElevatorPosition();
-        // final var endPos = targetElevatorState.targetPos;
-        
-        // final var distance = Math.abs(endPos - startPos);
-
-        // System.out.println("Start: " + startPos + ", End: " + endPos + ", Dist: " + distance);
-
-        // final TrapezoidProfile.State startState, goalState;
-        
-        // if(startPos < endPos) {
-        //     goalState = new TrapezoidProfile.State(distance, 0.0);
-        //     startState = new TrapezoidProfile.State(0.0, elevator.getElevatorVelocity());
-        // }
-        // else {
-        //     goalState = new TrapezoidProfile.State(0,0);
-        //     startState = new TrapezoidProfile.State(distance, elevator.getElevatorVelocity());
-        // }
-
         return new TrapezoidProfile(
             new TrapezoidProfile.Constraints(
                 ElevatorConfig.kMaxVelocity,
-                ElevatorConfig.kMinVelocity
-            ), 
-            new TrapezoidProfile.State(targetElevatorState.targetPos, 0),  //goal state
-            new TrapezoidProfile.State(elevator.getElevatorPosition(), elevator.getElevatorVelocity())); //start state
+                ElevatorConfig.kMaxAcceleration
+            ),
+            new TrapezoidProfile.State(targetState.target, 0),  //goal state
+            new TrapezoidProfile.State(elevator.getPositionMeters(), elevator.getVelocityMps())); //start state
     }
 }

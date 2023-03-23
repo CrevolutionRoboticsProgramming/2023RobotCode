@@ -4,22 +4,16 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
-import frc.robot.elevator.ElevatorConfig.ElevatorPosition;
+import frc.robot.elevator.Elevator;
+import frc.robot.elevator.ElevatorConfig;
+import frc.robot.elevator.ElevatorConfig.ElevatorState;
 
 public class ElevatorCommands {
-    public static Command elevatorConeLow() {
-        return new InstantCommand(() -> RobotContainer.elevator.setElevatorSetpoint(ElevatorPosition.kMid), RobotContainer.elevator);
+    public static Command setState(ElevatorConfig.ElevatorState state) {
+        return new SetElevatorState(RobotContainer.elevator, state);
     }
 
-    public static Command elevatorConeHigh() {
-        return new InstantCommand(() -> RobotContainer.elevator.setElevatorSetpoint(ElevatorPosition.kHigh), RobotContainer.elevator);
-    }
-
-    public static Command elevatorCubeLow() {
-        return new InstantCommand(() -> RobotContainer.elevator.setElevatorSetpoint(ElevatorPosition.kMid), RobotContainer.elevator);
-    }
-
-    public static Command elevatorCubeHigh() {
-        return new InstantCommand(() -> RobotContainer.elevator.setElevatorSetpoint(ElevatorPosition.kHigh), RobotContainer.elevator);
+    public static Command holdState() {
+        return new HoldElevatorState(RobotContainer.elevator);
     }
 }

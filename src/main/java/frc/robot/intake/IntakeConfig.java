@@ -58,7 +58,7 @@ public class IntakeConfig {
     public static final int kRollerSparkID = 46;
     public static final int kHoodForwardChannel = 0;
     public static final int kHoodReverseChannel = 1;
-    public static final int kLimitSwitchID = 0;
+    public static final int kLimitSwitchID = 7;
 
     public static final boolean kPivotMotorInverted = false;
     public static final boolean kRollerMotorInverted = false;
@@ -68,9 +68,9 @@ public class IntakeConfig {
 
     // Intake Profiles
     public static IntakeProfile kConeProfile = new IntakeProfile(20, 40, 1, "Cone");
-    public static IntakeProfile kCubeProfile = new IntakeProfile(10, 40, 1, "Cube");
+    public static IntakeProfile kCubeProfile = new IntakeProfile(5, 30, 1, "Cube");
     public static IntakeProfile kOuttake = new IntakeProfile(40, 40, -1, "Output");
-    public static IntakeProfile kDefaultProfile = new IntakeProfile(30, 30, 1, "Default");
+    public static IntakeProfile kDefaultProfile = new IntakeProfile(40, 40, 1, "Default");
 
     // Pivot PID constants
     public static final double kVelP = 0.0;
@@ -92,8 +92,8 @@ public class IntakeConfig {
     public static final double kPivotZeroOffset = 0.98;
 
     // Tensioning constants
-    public static final double kTensionOutput = -0.05;
-    public static final double kTensionFindOutput = -0.15;
+    public static final double kTensionOutput = -0.03;
+    public static final double kTensionFindOutput = -0.05;
 
     public static final int kDefaultContinuousCurrentLimit = 35;
     public static final int kDefaultPeakCurrentLimit = 60;
