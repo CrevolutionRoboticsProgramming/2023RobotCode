@@ -60,13 +60,27 @@ public class SetPivotState extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         System.out.println(getName() + ": end");
-        pivot.setState(interrupted ? IntakeConfig.PivotState.kUnspecified : targetPivotState);
+
+        final IntakeConfig.PivotState state;
+        if (pivot.getLimitSwitchState()) {
+            state = IntakeConfig.PivotState.kDeployed;
+        } else if (interrupted) {
+            state = IntakeConfig.PivotState.kUnspecified;
+        } else {
+            state = targetPivotState;
+        }
+
+        pivot.setState(state);
         pivot.stop();
     }
 
     @Override
     public boolean isFinished() {
-        return profile != null && profile.isFinished(getElapsedTime());
+        final var time = getElapsedTime();
+
+        // 1) Profile is still running and reached limit switch
+        return (profile != null && profile.calculate(time).velocity < 0 && pivot.getLimitSwitchState()) ||
+                (profile != null && profile.isFinished(time));
     }
 
     private double getElapsedTime() {

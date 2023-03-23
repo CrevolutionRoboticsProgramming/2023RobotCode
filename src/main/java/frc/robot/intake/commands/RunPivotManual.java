@@ -29,11 +29,17 @@ public class RunPivotManual extends CommandBase {
 
     @Override
     public void execute() {
-        pivot.setOutput(supplier.getAsDouble());
+        final var input = supplier.getAsDouble();
+        if (input < 0 && pivot.getLimitSwitchState()) {
+            pivot.stop();
+        } else {
+            pivot.setOutput(input);
+        }
     }
 
     @Override
     public void end(boolean interrupted) {
+        pivot.setState(pivot.getLimitSwitchState() ? IntakeConfig.PivotState.kDeployed : IntakeConfig.PivotState.kUnspecified);
         pivot.stop();
     }
 }
