@@ -11,6 +11,7 @@ import frc.robot.commands.HandoffCone;
 import frc.robot.commands.HandoffCube;
 import frc.robot.commands.ScoreMid;
 import frc.robot.drivetrain.commands.DrivetrainCommands;
+import frc.robot.intake.IntakeConfig;
 import frc.robot.intake.commands.*;
 
 public class DriverGamepad extends Gamepad {
@@ -25,7 +26,6 @@ public class DriverGamepad extends Gamepad {
 
     @Override
     public void setupTeleopButtons() {
-        // Drivetrain Input
         gamepad.startButton.onTrue(new InstantCommand(() -> RobotContainer.drivetrain.zeroGyro()));
         gamepad.leftTriggerButton.whileTrue(DrivetrainCommands.driveFieldOrientedSlow(
                 this::getDriveTranslationX,
@@ -41,17 +41,7 @@ public class DriverGamepad extends Gamepad {
             }
         }));
 
-//        gamepad.aButton.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kNeutral));
-//        gamepad.bButton.onTrue(new SetElevatorState(RobotContainer.elevator, ElevatorConfig.ElevatorState.kLoad));
-//        gamepad.yButton.onTrue(new SetElevatorState(RobotContainer.elevator, ElevatorConfig.ElevatorState.kChamber));
-        gamepad.aButton.onTrue(new HandoffCube());
-        gamepad.bButton.onTrue(new ScoreMid());
-        // Intake input
-//        gamepad.rightTriggerButton.whileTrue(new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kCone));
-//        gamepad.leftTriggerButton.whileTrue(new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kCube));
-
-        gamepad.leftBumper.onTrue(ClawCommands.setState(ClawConfig.ClawState.kOpen));
-        gamepad.rightBumper.onTrue(ClawCommands.setState(ClawConfig.ClawState.kClosed));
+        gamepad.rightBumper.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kDeployed));
     }
 
     @Override
