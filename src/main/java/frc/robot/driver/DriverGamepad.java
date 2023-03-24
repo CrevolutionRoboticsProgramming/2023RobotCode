@@ -1,11 +1,15 @@
 package frc.robot.driver;
 
-import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.SpectrumLib.gamepads.Gamepad;
 import frc.robot.RobotContainer;
+import frc.robot.claw.ClawConfig;
+import frc.robot.claw.commands.ClawCommands;
+import frc.robot.commands.HandoffCone;
+import frc.robot.commands.HandoffCube;
+import frc.robot.commands.ScoreMid;
 import frc.robot.drivetrain.commands.DrivetrainCommands;
 import frc.robot.intake.commands.*;
 
@@ -37,9 +41,17 @@ public class DriverGamepad extends Gamepad {
             }
         }));
 
+//        gamepad.aButton.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kNeutral));
+//        gamepad.bButton.onTrue(new SetElevatorState(RobotContainer.elevator, ElevatorConfig.ElevatorState.kLoad));
+//        gamepad.yButton.onTrue(new SetElevatorState(RobotContainer.elevator, ElevatorConfig.ElevatorState.kChamber));
+        gamepad.aButton.onTrue(new HandoffCube());
+        gamepad.bButton.onTrue(new ScoreMid());
         // Intake input
 //        gamepad.rightTriggerButton.whileTrue(new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kCone));
 //        gamepad.leftTriggerButton.whileTrue(new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kCube));
+
+        gamepad.leftBumper.onTrue(ClawCommands.setState(ClawConfig.ClawState.kOpen));
+        gamepad.rightBumper.onTrue(ClawCommands.setState(ClawConfig.ClawState.kClosed));
     }
 
     @Override

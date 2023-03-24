@@ -8,6 +8,7 @@ import frc.robot.intake.IntakeConfig;
 import java.util.function.DoubleSupplier;
 
 public class IntakeCommands {
+    @Deprecated
     public static Command setPivotState(IntakeConfig.PivotState state) {
 //        return new InstantCommand(() -> RobotContainer.intakePivot.setPivotState(state), RobotContainer.intakePivot);
         return null;

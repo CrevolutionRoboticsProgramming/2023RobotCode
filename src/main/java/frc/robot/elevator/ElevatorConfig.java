@@ -9,6 +9,9 @@ public class ElevatorConfig {
         kMid(0.85),
         kHigh(1.15),
         kHighGoal(1.15),
+        kLoad(0.0437),
+        kChamber(0.0935),
+        kPreScore(0.165),
         kUnspecified(0);
         
         public final double target;

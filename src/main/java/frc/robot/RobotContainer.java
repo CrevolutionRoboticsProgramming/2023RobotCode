@@ -98,6 +98,5 @@ public class RobotContainer {
                 driverGamepad::getDriveTranslationY,
                 driverGamepad::getDriveRotation
         ));
-//        claw.setDefaultCommand(ClawCommands.setState(ClawConfig.ClawState.kClosed));
     }
 }

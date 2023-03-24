@@ -20,6 +20,7 @@ public class IntakeConfig {
         kStowed(Conversions.degreesToRadians(135)),
         kScoreLow(Conversions.degreesToRadians(60)),
         kHumanPlayer(Conversions.degreesToRadians(135)),
+        kNeutral(2.53),
         kUnspecified(0);
 
         /**
@@ -70,6 +71,7 @@ public class IntakeConfig {
     public static IntakeProfile kConeProfile = new IntakeProfile(50, 50, 1, "Cone");
     public static IntakeProfile kCubeProfile = new IntakeProfile(10, 30, 0.75, "Cube");
     public static IntakeProfile kOuttake = new IntakeProfile(50, 50, -1, "Output");
+    public static IntakeProfile kHandoff = new IntakeProfile(40, 40, 0.5, "Handoff");
     public static IntakeProfile kDefaultProfile = new IntakeProfile(40, 40, 1, "Default");
 
     // Pivot PID constants

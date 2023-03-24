@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 
 public class RunIntake extends CommandBase {
     public enum Mode {
-        kCube(IntakeConfig.kCubeProfile), kCone(IntakeConfig.kConeProfile), kOuttake(IntakeConfig.kOuttake);
+        kCube(IntakeConfig.kCubeProfile), kCone(IntakeConfig.kConeProfile), kOuttake(IntakeConfig.kOuttake), kHandoff(IntakeConfig.kHandoff);
 
         Mode(IntakeConfig.IntakeProfile profile) {
             kProfile = profile;
