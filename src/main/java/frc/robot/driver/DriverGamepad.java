@@ -23,18 +23,23 @@ public class DriverGamepad extends Gamepad {
     public void setupTeleopButtons() {
         // Drivetrain Input
         gamepad.startButton.onTrue(new InstantCommand(() -> RobotContainer.drivetrain.zeroGyro()));
-
-        gamepad.aButton.onTrue(new InstantCommand(() -> RobotContainer.intakePivot.setIdleMode(CANSparkMax.IdleMode.kCoast)));
-        gamepad.bButton.onTrue(new InstantCommand(() -> RobotContainer.intakePivot.setIdleMode(CANSparkMax.IdleMode.kBrake)));
-
-        // Intake input
-//        gamepad.rightTriggerButton.whileTrue(new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kCone));
-//        gamepad.leftTriggerButton.whileTrue(new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kCube));
         gamepad.leftTriggerButton.whileTrue(DrivetrainCommands.driveFieldOrientedSlow(
                 this::getDriveTranslationX,
                 this::getDriveTranslationY,
                 this::getDriveRotation
         ));
+
+        gamepad.rightTriggerButton.whileTrue(new RunIntake(RobotContainer.intakeRoller, () -> {
+            if (getRightTriggerRaw() < 0.9) {
+                return RunIntake.Mode.kCube;
+            } else {
+                return RunIntake.Mode.kCone;
+            }
+        }));
+
+        // Intake input
+//        gamepad.rightTriggerButton.whileTrue(new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kCone));
+//        gamepad.leftTriggerButton.whileTrue(new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kCube));
     }
 
     @Override

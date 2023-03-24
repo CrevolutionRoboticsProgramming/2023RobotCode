@@ -24,16 +24,16 @@ public class RunIntakeManual extends CommandBase {
 
     @Override
     public void initialize() {
-        roller.setRollerProfile(IntakeConfig.kDefaultProfile);
+        roller.setProfile(IntakeConfig.kDefaultProfile);
     }
 
     @Override
     public void execute() {
-        roller.setRollerOutput(supplier.getAsDouble());
+        roller.setOutput(supplier.getAsDouble());
     }
 
     @Override
     public void end(boolean interrupted) {
-        roller.setRollerOutput(0);
+        roller.setOutput(0);
     }
 }

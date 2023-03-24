@@ -10,10 +10,10 @@ public class IntakeRoller extends SubsystemBase {
 
     public IntakeRoller() {
         rollerSpark = new CANSparkMax(IntakeConfig.kRollerSparkID, CANSparkMaxLowLevel.MotorType.kBrushless);
-        setRollerProfile(IntakeConfig.kDefaultProfile);
+        setProfile(IntakeConfig.kDefaultProfile);
     }
 
-    public void setRollerOutput(double output) {
+    public void setOutput(double output) {
         final var adjusted_output = output * nominalOutput;
         rollerSpark.set(adjusted_output);
     }
@@ -22,7 +22,7 @@ public class IntakeRoller extends SubsystemBase {
         rollerSpark.set(0);
     }
 
-    public void setRollerProfile(IntakeConfig.IntakeProfile profile) {
+    public void setProfile(IntakeConfig.IntakeProfile profile) {
         rollerSpark.setSmartCurrentLimit(profile.kStallCurrentLimit, profile.kFreeCurrentLimit);
         nominalOutput = profile.kNominalOutput;
     }
