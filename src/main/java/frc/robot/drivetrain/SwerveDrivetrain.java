@@ -36,42 +36,10 @@ public class SwerveDrivetrain extends SubsystemBase {
         zeroGyro();
 
         modules = new SwerveModule[]{
-                new SwerveModule(0,
-                        SwerveDrivetrainConstants.FRONT_LEFT_OFFSET,
-                        SwerveDrivetrainConstants.FRONT_LEFT_ANGLE_ID,
-                        SwerveDrivetrainConstants.FRONT_LEFT_DRIVE_ID,
-                        SwerveDrivetrainConstants.FRONT_LEFT_CANCODER_ID,
-                        SwerveDrivetrainConstants.FRONT_LEFT_ANGLE_INVERT,
-                        SwerveDrivetrainConstants.FRONT_LEFT_DRIVE_INVERT,
-                        SwerveDrivetrainConstants.FRONT_LEFT_CANCODER_INVERT
-                ),
-                new SwerveModule(1,
-                        SwerveDrivetrainConstants.FRONT_RIGHT_OFFSET,
-                        SwerveDrivetrainConstants.FRONT_RIGHT_ANGLE_ID,
-                        SwerveDrivetrainConstants.FRONT_RIGHT_DRIVE_ID,
-                        SwerveDrivetrainConstants.FRONT_RIGHT_CANCODER_ID,
-                        SwerveDrivetrainConstants.FRONT_RIGHT_ANGLE_INVERT,
-                        SwerveDrivetrainConstants.FRONT_RIGHT_DRIVE_INVERT,
-                        SwerveDrivetrainConstants.FRONT_RIGHT_CANCODER_INVERT
-                ),
-                new SwerveModule(2,
-                        SwerveDrivetrainConstants.BACK_LEFT_OFFSET,
-                        SwerveDrivetrainConstants.BACK_LEFT_ANGLE_ID,
-                        SwerveDrivetrainConstants.BACK_LEFT_DRIVE_ID,
-                        SwerveDrivetrainConstants.BACK_LEFT_CANCODER_ID,
-                        SwerveDrivetrainConstants.BACK_LEFT_ANGLE_INVERT,
-                        SwerveDrivetrainConstants.BACK_LEFT_DRIVE_INVERT,
-                        SwerveDrivetrainConstants.BACK_LEFT_CANCODER_INVERT
-                ),
-                new SwerveModule(3,
-                        SwerveDrivetrainConstants.BACK_RIGHT_OFFSET,
-                        SwerveDrivetrainConstants.BACK_RIGHT_ANGLE_ID,
-                        SwerveDrivetrainConstants.BACK_RIGHT_DRIVE_ID,
-                        SwerveDrivetrainConstants.BACK_RIGHT_CANCODER_ID,
-                        SwerveDrivetrainConstants.BACK_RIGHT_ANGLE_INVERT,
-                        SwerveDrivetrainConstants.BACK_RIGHT_DRIVE_INVERT,
-                        SwerveDrivetrainConstants.BACK_RIGHT_CANCODER_INVERT
-                ),
+                new SwerveModule(0, DrivetrainConfig.kFrontLeftModuleConfig),
+                new SwerveModule(1, DrivetrainConfig.kFrontRightModuleConfig),
+                new SwerveModule(2, DrivetrainConfig.kBackLeftModuleConfig),
+                new SwerveModule(3, DrivetrainConfig.kBackRightModuleConfig),
         };
 
         odometry = new SwerveDriveOdometry(
@@ -109,7 +77,7 @@ public class SwerveDrivetrain extends SubsystemBase {
     public void setModuleStates(SwerveModuleState[] desiredStates) {
         SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, SwerveDrivetrainConstants.MAX_SPEED);
         for (var mod : modules) {
-            mod.setDesiredState(desiredStates[mod.m_moduleNumber], false);
+            mod.setDesiredState(desiredStates[mod.getId()], false);
         }
     }
 
@@ -146,7 +114,7 @@ public class SwerveDrivetrain extends SubsystemBase {
     public SwerveModuleState[] getStates() {
         SwerveModuleState[] states = new SwerveModuleState[4];
         for (var mod : modules) {
-            states[mod.m_moduleNumber] = mod.getState();
+            states[mod.getId()] = mod.getState();
         }
         return states;
     }
@@ -184,7 +152,7 @@ public class SwerveDrivetrain extends SubsystemBase {
     public SwerveModulePosition[] getModulePositions() {
         SwerveModulePosition[] positions = new SwerveModulePosition[4];
         for (SwerveModule mod : modules) {
-            positions[mod.m_moduleNumber] = mod.getPosition();
+            positions[mod.getId()] = mod.getPosition();
         }
         return positions;
     }
@@ -194,13 +162,19 @@ public class SwerveDrivetrain extends SubsystemBase {
         //UPDATE ODOMETRY
         odometry.update(getYaw(), getModulePositions());
 
-        for (SwerveModule mod : modules) {
-            SmartDashboard.putNumber("Mod " + mod.m_moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
-            SmartDashboard.putNumber("Mod " + mod.m_moduleNumber + " Integrated", mod.getPosition().angle.getDegrees());
-            SmartDashboard.putNumber("Mod " + mod.m_moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);
-        }
+//        updateSmartDashboard();
+//        updateLog();
+    }
 
-        //UPDATE LOGGER (PERIODIC) -> AdvantageScope Configuration
+    private void updateSmartDashboard() {
+        for (SwerveModule mod : modules) {
+            SmartDashboard.putNumber("Mod " + mod.getId() + " Cancoder", mod.getCanCoder().getDegrees());
+            SmartDashboard.putNumber("Mod " + mod.getId() + " Integrated", mod.getPosition().angle.getDegrees());
+            SmartDashboard.putNumber("Mod " + mod.getId() + " Velocity", mod.getState().speedMetersPerSecond);
+        }
+    }
+
+    private void updateLog() {
         Logger.getInstance().recordOutput("Drive/Odometry/RobotPose2d", odometry.getPoseMeters());
         Logger.getInstance().recordOutput("Drive/Odometry/RobotPose3d", new Pose3d(odometry.getPoseMeters()));
         Logger.getInstance().recordOutput("Drive/Yaw/Robot", getNonContinuousGyro());
@@ -236,6 +210,5 @@ public class SwerveDrivetrain extends SubsystemBase {
 
         Logger.getInstance().recordOutput("Drive/RealStates", getStates());
         Logger.getInstance().recordOutput("Drive/SetpointStates", currentModuleStates);
-
     }
 }

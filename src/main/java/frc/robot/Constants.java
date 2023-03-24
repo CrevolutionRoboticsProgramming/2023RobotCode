@@ -62,9 +62,9 @@ public final class Constants {
 
         /* Module CANCoder Offsets */
         public static double FRONT_LEFT_OFFSET = 176.66; // 176.30
-        public static double FRONT_RIGHT_OFFSET = 203.99; 
+        public static double FRONT_RIGHT_OFFSET = 206.99;
         public static double BACK_LEFT_OFFSET = 100.98;
-        public static double BACK_RIGHT_OFFSET = 64.59;
+        public static double BACK_RIGHT_OFFSET = 67.59;
 
         // public static double FRONT_LEFT_OFFSET = 176.66;
         // public static double FRONT_RIGHT_OFFSET = 207.42; 
@@ -238,4 +238,6 @@ public final class Constants {
         public static final int ELEVATOR_MOTOR_ID = 0;
         public static final int ENCODER_CHANNEL = 0;
     }
+
+    public static final String kCanivoreId = "Canivore";
 }

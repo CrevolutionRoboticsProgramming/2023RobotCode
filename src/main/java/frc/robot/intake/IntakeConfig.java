@@ -66,8 +66,8 @@ public class IntakeConfig {
     public static final CANSparkMax.IdleMode kRollerIdleMode = CANSparkMax.IdleMode.kCoast;
 
     // Intake Profiles
-    public static IntakeProfile kConeProfile = new IntakeProfile(20, 40, 1, "Cone");
-    public static IntakeProfile kCubeProfile = new IntakeProfile(10, 40, 1, "Cube");
+    public static IntakeProfile kConeProfile = new IntakeProfile(30, 40, 1, "Cone");
+    public static IntakeProfile kCubeProfile = new IntakeProfile(20, 40, 1, "Cube");
     public static IntakeProfile kOuttake = new IntakeProfile(40, 40, -1, "Output");
     public static IntakeProfile kDefaultProfile = new IntakeProfile(30, 30, 1, "Default");
 

@@ -46,20 +46,21 @@ public class RobotContainer {
         // Subsystem initialization
         drivetrain = new SwerveDrivetrain();
 //        poseEstimator = new PoseEstimator(orangePi, drivetrain);
-        intakePivot = new IntakePivot();
-        intakeRoller = new IntakeRoller();
-        intakeHood = new IntakeHood();
-        elevator = new Elevator();
-        claw = new Claw();
+//        intakePivot = new IntakePivot();
+//        intakeRoller = new IntakeRoller();
+//        intakeHood = new IntakeHood();
+//        elevator = new Elevator();
+//        claw = new Claw();
 
 
         // Gamepad initialization
         driverGamepad = new DriverGamepad();
-        operatorGamepad = new OperatorGamepad();
+//        operatorGamepad = new OperatorGamepad();
 
 
 //        autoChooser = getAutonChooser();
 //        SmartDashboard.putData(autoChooser);
+        setDefaultCommands();
 
     }
 
@@ -83,11 +84,11 @@ public class RobotContainer {
         CommandScheduler.getInstance().clearButtons();
         CommandScheduler.getInstance().getActiveButtonLoop().clear();
         driverGamepad.resetConfig();
-        operatorGamepad.resetConfig();
+//        operatorGamepad.resetConfig();
     }
 
     private void setDefaultCommands() {
-        intakePivot.setDefaultCommand(new HoldPivot(intakePivot));
+//        intakePivot.setDefaultCommand(new HoldPivot(intakePivot));
 
         drivetrain.setDefaultCommand(DrivetrainCommands.driveFieldOriented(
                 driverGamepad::getDriveTranslationX,

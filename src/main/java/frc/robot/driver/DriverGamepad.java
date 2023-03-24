@@ -21,26 +21,26 @@ public class DriverGamepad extends Gamepad {
     public void setupTeleopButtons() {
         // Drivetrain Input
         gamepad.startButton.onTrue(new InstantCommand(() -> RobotContainer.drivetrain.zeroGyro()));
-        gamepad.rightTriggerButton.whileTrue(DrivetrainCommands.driveWithIntakeRotation(
-                this::getDriveTranslationX,
-                this::getDriveTranslationY,
-                this::getDriveRotation
-        ));
-        gamepad.leftTriggerButton.whileTrue(DrivetrainCommands.driveFieldOrientedSlow(
-                this::getDriveTranslationX,
-                this::getDriveTranslationY,
-                this::getDriveRotation
-        ));
+//        gamepad.rightTriggerButton.whileTrue(DrivetrainCommands.driveWithIntakeRotation(
+//                this::getDriveTranslationX,
+//                this::getDriveTranslationY,
+//                this::getDriveRotation
+//        ));
+//        gamepad.leftTriggerButton.whileTrue(DrivetrainCommands.driveFieldOrientedSlow(
+//                this::getDriveTranslationX,
+//                this::getDriveTranslationY,
+//                this::getDriveRotation
+//        ));
 
         // Intake inputg
-        gamepad.rightTriggerButton.whileTrue(new RunIntake(RobotContainer.intakeRoller, () -> {
-            if (getRightTriggerRaw() < DriverConfig.kConeThreshold) {
-                return RunIntake.Mode.kCube;
-            } else {
-                return RunIntake.Mode.kCone;
-            }
-        }));
-        gamepad.rightBumper.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kDeployed));
+//        gamepad.rightTriggerButton.whileTrue(new RunIntake(RobotContainer.intakeRoller, () -> {
+//            if (getRightTriggerRaw() < DriverConfig.kConeThreshold) {
+//                return RunIntake.Mode.kCube;
+//            } else {
+//                return RunIntake.Mode.kCone;
+//            }
+//        }));
+//        gamepad.rightBumper.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kDeployed));
 
     }
 
@@ -81,7 +81,7 @@ public class DriverGamepad extends Gamepad {
     }
 
     public double getDriveTranslationX() {
-        return gamepad.leftStick.getX();
+        return -gamepad.leftStick.getX();
     }
 
     public double getDriveTranslationY() {

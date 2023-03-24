@@ -36,7 +36,7 @@ public class DrivetrainCommands {
     public static Command driveWithIntakeRotation(DoubleSupplier translationX, DoubleSupplier translationY,
                                                   DoubleSupplier rotation) {
         return drive(translationX, translationY, rotation, 1.0, 1.0, true, new Translation2d(
-                Constants.SwerveDrivetrainConstants.DRIVETRAIN_ACTUAL_LENGTH / 2.0,
+                -Constants.SwerveDrivetrainConstants.DRIVETRAIN_ACTUAL_LENGTH / 2.0,
                 0
         ));
     }
