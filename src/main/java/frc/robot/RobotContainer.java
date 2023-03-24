@@ -1,8 +1,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.claw.ClawConfig;
-import frc.robot.claw.commands.ClawCommands;
+import frc.robot.drivetrain.Drivetrain;
+import frc.robot.drivetrain.commands.DrivetrainCommands;
 import frc.robot.elevator.commands.ElevatorCommands;
 import frc.robot.intake.IntakeHood;
 
@@ -17,8 +17,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.SwerveDrivetrainConstants;
 import frc.robot.autos.AutonMaster;
 import frc.robot.claw.Claw;
-import frc.robot.drivetrain.SwerveDrivetrain;
-import frc.robot.drivetrain.commands.TeleopDrive;
+import frc.robot.drivetrainOld.SwerveDrivetrain;
+import frc.robot.drivetrainOld.commands.TeleopDrive;
 import frc.robot.elevator.Elevator;
 
 
@@ -32,7 +32,7 @@ public class RobotContainer {
     public static OperatorGamepad operatorGamepad;
 
     /*Declare Subsystems*/
-    public static SwerveDrivetrain drivetrain;
+    public static Drivetrain drivetrain;
 //    public static PoseEstimator poseEstimator;
     public static IntakePivot intakePivot;
     public static IntakeRoller intakeRoller;
@@ -46,7 +46,7 @@ public class RobotContainer {
 
     public RobotContainer() {
         // Subsystem initialization
-        drivetrain = new SwerveDrivetrain();
+        drivetrain = new Drivetrain();
 //        poseEstimator = new PoseEstimator(orangePi, drivetrain);
         intakePivot = new IntakePivot();
         intakeRoller = new IntakeRoller();
@@ -60,9 +60,6 @@ public class RobotContainer {
         driverGamepad = new DriverGamepad();
         operatorGamepad = new OperatorGamepad();
 
-        drivetrain.setDefaultCommand(new TeleopDrive(drivetrain, driverControllerRetro,
-                XboxController.Axis.kLeftY.value, XboxController.Axis.kLeftX.value, XboxController.Axis.kRightX.value
-                , SwerveDrivetrainConstants.FIELD_RELATIVE, SwerveDrivetrainConstants.OPEN_LOOP));
 
 //        autoChooser = getAutonChooser();
 //        SmartDashboard.putData(autoChooser);
@@ -96,6 +93,11 @@ public class RobotContainer {
     private void setDefaultCommands() {
         intakePivot.setDefaultCommand(new HoldPivot(intakePivot));
         elevator.setDefaultCommand(ElevatorCommands.holdState());
+        drivetrain.setDefaultCommand(DrivetrainCommands.driveFieldOriented(
+                driverGamepad::getDriveTranslationX,
+                driverGamepad::getDriveTranslationY,
+                driverGamepad::getDriveRotation
+        ));
 //        claw.setDefaultCommand(ClawCommands.setState(ClawConfig.ClawState.kClosed));
     }
 }

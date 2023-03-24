@@ -6,14 +6,12 @@ package frc.robot.autos;
 
 import org.littletonrobotics.junction.Logger;
 
-import com.pathplanner.lib.auto.PIDConstants;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.SwerveDrivetrainConstants;
-import frc.robot.drivetrain.SwerveDrivetrain;
+import frc.robot.drivetrainOld.SwerveDrivetrain;
 
 public class AutoBalancing extends CommandBase {
   /** Creates a new AutoBalancing. */

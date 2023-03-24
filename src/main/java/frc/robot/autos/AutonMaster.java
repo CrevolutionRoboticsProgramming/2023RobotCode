@@ -28,7 +28,7 @@ public final class AutonMaster {
     public static final Map<String, Command> eventMap = new HashMap<>(Map.ofEntries(
         Map.entry("Stop", new InstantCommand(RobotContainer.drivetrain::stopSwerve)),
         
-        Map.entry("ZeroGyro", new InstantCommand(() -> RobotContainer.drivetrain.m_pigeonGyro.setYaw(RobotContainer.drivetrain.getYaw().getDegrees()))),
+//        Map.entry("ZeroGyro", new InstantCommand(() -> RobotContainer.drivetrain.m_pigeonGyro.setYaw(RobotContainer.drivetrain.getYaw().getDegrees()))),
         
         Map.entry("IntakeDown", 
         new ParallelCommandGroup(
@@ -52,11 +52,11 @@ public final class AutonMaster {
             )
         ),
         
-        Map.entry("ElevatorDown", new SetElevatorState(RobotContainer.elevator, ElevatorState.kZero)),
+        Map.entry("ElevatorDown", new SetElevatorState(RobotContainer.elevator, ElevatorState.kZero))
 
-        Map.entry("AutoBalance", new AutoBalancing(RobotContainer.drivetrain)),
-        
-        Map.entry("AntiSlip", new AntiSlip(RobotContainer.drivetrain))
+//        Map.entry("AutoBalance", new AutoBalancing(RobotContainer.drivetrain)),
+//
+//        Map.entry("AntiSlip", new AntiSlip(RobotContainer.drivetrain))
 
     ));
 

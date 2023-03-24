@@ -10,6 +10,7 @@ import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.elevator.ElevatorConfig.ElevatorState;
 
@@ -93,5 +94,12 @@ public class Elevator extends SubsystemBase {
             currentState = ElevatorState.kZero;
             zero();
         }
+
+        updateSmartDashboard();
+    }
+
+    private void updateSmartDashboard() {
+        SmartDashboard.putNumber("Elevator Position (Meters)", getPositionMeters());
+        SmartDashboard.putNumber("Elevator Velocity (Meters / Second)", getVelocityMps());
     }
 }

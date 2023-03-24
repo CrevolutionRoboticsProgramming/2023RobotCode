@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.SparkMaxAbsoluteEncoder;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.CrevoLib.math.Conversions;
 
@@ -89,6 +90,12 @@ public class IntakePivot extends SubsystemBase {
 
     @Override
     public void periodic() {
-        System.out.println("[pivot] pos (" + getAngleRads() + "), vel (" + getVelocityRps() + ")");
+//        System.out.println("[pivot] pos (" + getAngleRads() + "), vel (" + getVelocityRps() + ")");
+        updateSmartDashboard();
+    }
+
+    private void updateSmartDashboard() {
+        SmartDashboard.putNumber("Pivot Angle (Radians)", getAngleRads());
+        SmartDashboard.putNumber("Pivot Angular Velocity (Radians / Second)", getVelocityRps());
     }
 }
