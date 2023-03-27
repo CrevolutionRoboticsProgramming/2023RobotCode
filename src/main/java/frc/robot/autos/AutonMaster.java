@@ -1,5 +1,6 @@
 package frc.robot.autos;
 
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.*;
 import frc.robot.intake.IntakePivot;
@@ -55,20 +57,18 @@ public final class AutonMaster {
         Map.entry("ScoreHigh", new SequentialCommandGroup(
             ClawCommands.setState(ClawState.kClosed),   
             new ScoreHigh(),
-            ClawCommands.setState(ClawState.kOpen),
-            new ElevatorZero()
+            ClawCommands.setState(ClawState.kOpen)
             )),
 
         Map.entry("ScoreMid", new SequentialCommandGroup(
             ClawCommands.setState(ClawState.kClosed),   
             new ScoreHigh(),
-            ClawCommands.setState(ClawState.kOpen),
-            new ElevatorZero()
+            ClawCommands.setState(ClawState.kOpen)
             )),
 
         Map.entry("ScoreLow", new SequentialCommandGroup(
-            new SetPivotState(RobotContainer.intakePivot, PivotState.kScoreLow),
-            new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kOuttake).withTimeout(1)
+//            new SetPivotState(RobotContainer.intakePivot, PivotState.kScoreLow),
+            new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kOuttake).withTimeout(2)
         )),
     
         Map.entry("Wait2Seconds", new WaitCommand(2)),
@@ -84,7 +84,10 @@ public final class AutonMaster {
 
         Map.entry("AutoBalance", new AutoBalancing(RobotContainer.drivetrain)),
         
-        Map.entry("AntiSlip", new AntiSlip(RobotContainer.drivetrain))
+        Map.entry("AntiSlip", new AntiSlip(RobotContainer.drivetrain)),
+
+        Map.entry("ElevatorHigh", new SetElevatorState(RobotContainer.elevator, ElevatorState.kHigh)),
+        Map.entry("DropPiece", new InstantCommand(() -> RobotContainer.claw.setClawState(ClawState.kOpen)).andThen(new WaitCommand(2)))
 
     ));
 
@@ -154,6 +157,26 @@ public final class AutonMaster {
 
     public static Command blueOneandHalfPieceBalance() {
         return m_autoBuilder.fullAuto(PathPlanner.loadPath("blueOneandHalfPieceBalance", SLOW_PATH_CONSTRAINTS));
+    }
+
+    public static Command blueRightScoreLowMobility() {
+        return m_autoBuilder.fullAuto(PathPlanner.loadPath("BlueRightScoreLowMobility", new PathConstraints(3, 1.5)));
+    }
+
+    public static Command blueLeft1_5CubeMid() {
+        return m_autoBuilder.fullAuto(PathPlanner.loadPath("BlueLeft1.5CubeMid", new PathConstraints(3, 2)));
+    }
+
+    public static Command blusCenterLowScoreBalance() {
+        return m_autoBuilder.fullAuto(PathPlanner.loadPath("BlueCenterLowScoreBalance", new PathConstraints(2, 2)));
+    }
+
+    public static Command redBalance() {
+        return m_autoBuilder.fullAuto(PathPlanner.loadPath("RedBalance", new PathConstraints(2, 2)));
+    }
+
+    public static Command midBalance() {
+        return m_autoBuilder.fullAuto(PathPlanner.loadPath("BlueCenterMidScoreBalance", new PathConstraints(1, 1)));
     }
 
     public AutonMaster() {

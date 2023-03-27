@@ -35,9 +35,8 @@ public class OperatorGamepad extends Gamepad {
         // Elevator commands
         gamepad.aButton.onTrue(new ElevatorZero());
         gamepad.xButton.onTrue(new ScoreMid());
-        gamepad.xButton.onTrue(new AutoBalancing(RobotContainer.drivetrain));
 
-        gamepad.yButton.onTrue(new ScoreHigh());
+//        gamepad.yButton.onTrue(new ScoreHigh());
         gamepad.startButton.onTrue(new InstantCommand(() -> RobotContainer.elevator.zero()));
 
         gamepad.rightBumper.onTrue(ClawCommands.toggleState());

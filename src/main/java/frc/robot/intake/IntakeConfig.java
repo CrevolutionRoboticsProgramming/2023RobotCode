@@ -17,7 +17,7 @@ public class IntakeConfig {
 
     public enum PivotState {
         kDeployed(0),
-        kStowed(Conversions.degreesToRadians(120)),
+        kStowed(Conversions.degreesToRadians(90)),
         kScoreLow(Conversions.degreesToRadians(60)),
         kHumanPlayer(Conversions.degreesToRadians(135)),
         kNeutral(2.53),
@@ -75,7 +75,7 @@ public class IntakeConfig {
     public static IntakeProfile kDefaultProfile = new IntakeProfile(40, 40, 1, "Default");
 
     // Pivot PID constants
-    public static final double kVelP = 0.0;
+    public static final double kVelP = 0.1;
     public static final double kVelI = 0.0;
     public static final double kVelD = 0.0;
 

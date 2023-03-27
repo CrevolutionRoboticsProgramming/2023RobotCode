@@ -79,7 +79,8 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         /*Returns Auton Commands (Sendable Chooser) */
-        return AutonMaster.redScoreLowMobility();
+//        return autoChooser.getSelected();
+        return AutonMaster.midBalance();
     }
 
     private SendableChooser<Command> getAutonChooser() {

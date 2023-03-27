@@ -5,13 +5,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.SpectrumLib.gamepads.Gamepad;
 import frc.robot.RobotContainer;
-import frc.robot.claw.ClawConfig;
-import frc.robot.claw.commands.ClawCommands;
-import frc.robot.commands.HandoffCone;
-import frc.robot.commands.HandoffCube;
-import frc.robot.commands.ScoreMid;
 import frc.robot.drivetrain.commands.DrivetrainCommands;
-import frc.robot.intake.IntakeConfig;
 import frc.robot.intake.commands.*;
 
 public class DriverGamepad extends Gamepad {
@@ -41,8 +35,8 @@ public class DriverGamepad extends Gamepad {
                 return RunIntake.Mode.kCone;
             }
         }));
-        gamepad.rightTriggerButton.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kDeployed));
-        gamepad.rightTriggerButton.onFalse(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kStowed));
+//        gamepad.rightTriggerButton.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kDeployed));
+//        gamepad.rightTriggerButton.onFalse(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kStowed));
     }
 
     @Override

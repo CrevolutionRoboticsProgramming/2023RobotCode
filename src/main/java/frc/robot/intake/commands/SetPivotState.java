@@ -81,11 +81,11 @@ public class SetPivotState extends CommandBase {
 
         if (profile != null && time > 0.25 && profile.calculate(time).velocity < 0 && pivot.getLimitSwitchState()) {
             System.out.println("Canceling due to limit switch...");
+            return true;
         }
 
         // 1) Profile is still running and reached limit switch
-        return (profile != null && time > 0.25 && profile.calculate(time).velocity < 0 && pivot.getLimitSwitchState()) ||
-                (profile != null && profile.isFinished(time));
+        return profile != null && profile.isFinished(time);
     }
 
     private double getElapsedTime() {

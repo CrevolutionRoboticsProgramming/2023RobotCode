@@ -93,7 +93,7 @@ public class IntakePivot extends SubsystemBase {
     @Override
     public void periodic() {
         if (getLimitSwitchState()) {
-            encoder.setZeroOffset(encoder.getPosition());
+//            encoder.setZeroOffset(encoder.getPosition());
         }
 //        System.out.println("[pivot] pos (" + getAngleRads() + "), vel (" + getVelocityRps() + ")");
         updateSmartDashboard();
