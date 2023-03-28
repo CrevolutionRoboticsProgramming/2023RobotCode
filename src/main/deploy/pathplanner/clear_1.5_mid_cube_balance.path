@@ -2,21 +2,23 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 1.0,
-        "y": 3.0
+        "x": 1.75,
+        "y": 4.43
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.0,
-        "y": 3.0
+        "x": 2.7500000000000044,
+        "y": 4.43
       },
       "holonomicAngle": 0,
       "isReversal": false,
       "velOverride": null,
-      "isLocked": false,
+      "isLocked": true,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [],
+        "names": [
+          "ScoreMid"
+        ],
         "executionBehavior": "parallel",
         "waitBehavior": "none",
         "waitTime": 0
@@ -24,51 +26,67 @@
     },
     {
       "anchorPoint": {
-        "x": 3.0,
-        "y": 5.0
+        "x": 6.540217654000385,
+        "y": 4.602584044497111
       },
       "prevControl": {
-        "x": 3.0,
-        "y": 4.0
+        "x": 5.387320073176968,
+        "y": 4.602584044497111
       },
       "nextControl": {
-        "x": 3.0,
-        "y": 4.0
+        "x": 5.387320073176968,
+        "y": 4.602584044497111
       },
       "holonomicAngle": 0,
       "isReversal": true,
       "velOverride": null,
-      "isLocked": false,
-      "isStopPoint": false,
+      "isLocked": true,
+      "isStopPoint": true,
       "stopEvent": {
         "names": [],
         "executionBehavior": "parallel",
-        "waitBehavior": "none",
-        "waitTime": 0
+        "waitBehavior": "after",
+        "waitTime": 1.0
       }
     },
     {
       "anchorPoint": {
-        "x": 5.0,
+        "x": 4.35,
         "y": 3.0
       },
       "prevControl": {
-        "x": 4.0,
-        "y": 3.0
+        "x": 6.591782220242266,
+        "y": 2.8038694696348245
       },
       "nextControl": null,
       "holonomicAngle": 0,
       "isReversal": false,
-      "velOverride": null,
-      "isLocked": false,
+      "velOverride": 2.0,
+      "isLocked": true,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [],
+        "names": [
+          "AutoBalance"
+        ],
         "executionBehavior": "parallel",
         "waitBehavior": "none",
         "waitTime": 0
       }
     }
   ],
-  "markers": []
+  "markers": [
+    {
+      "position": 0.25,
+      "names": [
+        "IntakeDown",
+        "ElevatorZero"
+      ]
+    },
+    {
+      "position": 1.45,
+      "names": [
+        "IntakeUp"
+      ]
+    }
+  ]
 }

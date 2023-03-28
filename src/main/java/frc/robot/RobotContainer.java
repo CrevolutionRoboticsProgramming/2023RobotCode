@@ -36,7 +36,7 @@ public class RobotContainer {
 
     /*Declare Subsystems*/
     public static Drivetrain drivetrain;
-//    public static PoseEstimator poseEstimator;
+    //    public static PoseEstimator poseEstimator;
     public static IntakePivot intakePivot;
     public static IntakeRoller intakeRoller;
     public static IntakeHood intakeHood;
@@ -57,17 +57,16 @@ public class RobotContainer {
         elevator = new Elevator();
         claw = new Claw();
 
-    
 
         // Gamepad initialization
         driverGamepad = new DriverGamepad();
         operatorGamepad = new OperatorGamepad();
 
 
-       autoChooser = getAutonChooser();
-       ShuffleboardTab autonTab = Shuffleboard.getTab("Auton Chooser");
-       autonTab.add(autoChooser);
-       SmartDashboard.putData(autoChooser);
+        autoChooser = AutonMaster.getAutoSelector();
+        ShuffleboardTab autonTab = Shuffleboard.getTab("Auton Chooser");
+        autonTab.add(autoChooser);
+        SmartDashboard.putData(autoChooser);
 
         setDefaultCommands();
     }
@@ -79,23 +78,7 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         /*Returns Auton Commands (Sendable Chooser) */
-//        return autoChooser.getSelected();
-        return AutonMaster.midBalance();
-    }
-
-    private SendableChooser<Command> getAutonChooser() {
-        SendableChooser<Command> chooser = new SendableChooser<>();
-        chooser.setDefaultOption("Blue2PieceBalance", AutonMaster.bluePreloadPickupScoreBalance());
-        chooser.addOption("BlueNoElevator2PieceBalance", AutonMaster.blueNoElevatorPreloadPickupScoreBalance());
-        chooser.addOption("Blue1PieceBalance", AutonMaster.bluePreloadCommunityBalance());
-        chooser.addOption("Blue1PiecePickupBalance", AutonMaster.blueMiddlePreloadPickupBalance());
-        chooser.addOption("Red2PieceBalance", AutonMaster.redPreloadPickupScoreBalance());
-        chooser.addOption("RedNoElevator2PieceBalance", AutonMaster.redNoElevatorPreloadPickupScoreBalance());
-        chooser.addOption("RedPreloadPieceCommunityBalance", AutonMaster.redPreloadCommunityBalance()); 
-        chooser.addOption("Red1PiecePickupBalance", AutonMaster.redMiddlePreloadPickupBalance());
-        chooser.addOption("TestAutoBalance", AutonMaster.testAutoBalance());
-        chooser.addOption("BlueScoreLowMobility", AutonMaster.blueScoreLowMobility());
-        return chooser;
+        return autoChooser.getSelected();
     }
 
     public void reset() {
