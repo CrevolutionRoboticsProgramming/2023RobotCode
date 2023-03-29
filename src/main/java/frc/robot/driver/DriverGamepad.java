@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.SpectrumLib.gamepads.Gamepad;
 import frc.robot.RobotContainer;
 import frc.robot.drivetrain.commands.DrivetrainCommands;
+import frc.robot.intake.IntakeConfig;
 import frc.robot.intake.commands.*;
 
 public class DriverGamepad extends Gamepad {
@@ -21,6 +22,8 @@ public class DriverGamepad extends Gamepad {
     @Override
     public void setupTeleopButtons() {
         gamepad.startButton.onTrue(new InstantCommand(() -> RobotContainer.drivetrain.zeroGyro()));
+        gamepad.selectButton.onTrue(new InstantCommand(() -> RobotContainer.drivetrain.resetModules()));
+
         gamepad.leftTriggerButton.whileTrue(DrivetrainCommands.driveFieldOrientedSlow(
                 this::getDriveTranslationX,
                 this::getDriveTranslationY,
@@ -35,8 +38,9 @@ public class DriverGamepad extends Gamepad {
                 return RunIntake.Mode.kCone;
             }
         }));
-//        gamepad.rightTriggerButton.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kDeployed));
-//        gamepad.rightTriggerButton.onFalse(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kStowed));
+
+        gamepad.rightTriggerButton.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kDeployed));
+        gamepad.rightTriggerButton.onFalse(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kStowed));
     }
 
     @Override

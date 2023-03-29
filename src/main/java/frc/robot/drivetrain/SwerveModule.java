@@ -115,7 +115,7 @@ public class SwerveModule {
      *
      */
 
-    private void resetToAbsolute(){
+    void resetToAbsolute(){
         double absolutePosition = Conversions.degreesToFalcon(getCanCoder().getDegrees() - angleOffset.getDegrees(), DrivetrainConfig.kAngleGearRatio);
         angleMotor.setSelectedSensorPosition(absolutePosition);
     }

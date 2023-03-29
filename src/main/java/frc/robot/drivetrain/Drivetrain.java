@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.*;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -45,7 +46,6 @@ public class Drivetrain extends SubsystemBase {
         m_forward_bang_bang.setSetpoint(DRIVE_BANG_BANG_SP);
         m_reverse_bang_bang = new BangBangController();
         m_reverse_bang_bang.setSetpoint(-DRIVE_BANG_BANG_SP);
-
     }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
@@ -67,6 +67,9 @@ public class Drivetrain extends SubsystemBase {
         for(SwerveModule mod : m_swerveMods){
             mod.setDesiredState(swerveModuleStates[mod.getModuleId()], isOpenLoop);
         }
+
+        Timer.delay(1);
+        resetModules();
     }
 
     public void setChassisSpeeds(ChassisSpeeds targetSpeeds) {
@@ -143,25 +146,14 @@ public class Drivetrain extends SubsystemBase {
         return Rotation2d.fromDegrees(m_gyro.getRoll());
     }
 
-//    public void driveBack() {
-//
-//        if(counter == 0) {
-//
-//            Timer m_timer = new Timer();
-//            m_timer.start();
-//            if(m_timer.get() < 0.1) {
-//                drive(new Translation2d(-0.3, 0), 0, true, false);
-//            }  else {
-//                stopSwerve();
-//                counter++;
-//            }
-//
-//        }
-//
-//    }
-
     public boolean isPitchDerivativeHigh() {
         return Math.abs(getPitchDerivative()) > (2 * 0.02);
+    }
+
+    public void resetModules() {
+        for (final var module : m_swerveMods) {
+            module.resetToAbsolute();
+        }
     }
 
     @Override
