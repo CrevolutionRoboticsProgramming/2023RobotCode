@@ -59,7 +59,7 @@ public final class AutonMaster {
             )),
 
             // Note: currently intake is positioned by drive team in auto due to slack in mechanism
-            Map.entry("ShootMid", new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kOuttake).withTimeout(2)),
+            Map.entry("ShootCube", new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kOuttake).withTimeout(2)),
 
             Map.entry("ScoreMid", new SequentialCommandGroup(
                     ClawCommands.setState(ClawState.kClosed),
@@ -125,6 +125,11 @@ public final class AutonMaster {
      * An enum containing all full auton paths along with a display name for each
      */
     public enum AutonPath {
+        kClear1_5CubeMidShootBalance(
+                "clear_1.5_mid_cube_shoot_balance",
+                "Clear 1.5 Mid Cube Shoot + Balance",
+                AutonConstraints.kGeneric.get()
+        ),
         kClear1_5CubeMidBalance(
                 "clear_1.5_mid_cube_balance",
                 "Clear 1.5 Mid Cube + Balance",
@@ -142,6 +147,22 @@ public final class AutonMaster {
                 AutonConstraints.kCreep.get(),
                 AutonConstraints.kSlow.get(),
                 AutonConstraints.kGeneric.get()
+        ),
+        kClear1_5HighCone(
+                "clear_1.5_high_cone_balance",
+                "Clear 1.5 High Cone",
+                AutonConstraints.kCreep.get(),
+                AutonConstraints.kSlow.get()
+        ),
+        kCharge1MidCubeShootBalance(
+                "charge_1_mid_cube_shoot_balance",
+                "Charge 1 Mid Cube Shoot + Balance",
+                AutonConstraints.kSlow.get()
+        ),
+        kWire1_5CubeShootBalance(
+                "wire_1.5_cube_shoot_balance",
+                "Wire 1.5 Cube Shoot + Balance",
+                AutonConstraints.kSlow.get()
         );
 
         AutonPath(String pathName, String displayName, PathConstraints constraint, PathConstraints... constraints) {
