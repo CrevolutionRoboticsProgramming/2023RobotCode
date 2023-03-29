@@ -1,6 +1,7 @@
 package frc.robot.driver;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.SpectrumLib.gamepads.Gamepad;
@@ -24,20 +25,24 @@ public class DriverGamepad extends Gamepad {
         gamepad.startButton.onTrue(new InstantCommand(() -> RobotContainer.drivetrain.zeroGyro()));
         gamepad.selectButton.onTrue(new InstantCommand(() -> RobotContainer.drivetrain.resetModules()));
 
-        gamepad.leftTriggerButton.whileTrue(DrivetrainCommands.driveFieldOrientedSlow(
+        gamepad.leftTriggerButton.whileTrue(DrivetrainCommands.driveSlowMode(
                 this::getDriveTranslationX,
                 this::getDriveTranslationY,
                 this::getDriveRotation
         ));
 
         // Intake controls
-        gamepad.rightTriggerButton.whileTrue(new RunIntake(RobotContainer.intakeRoller, () -> {
-            if (getRightTriggerRaw() < 0.9) {
-                return RunIntake.Mode.kCube;
-            } else {
-                return RunIntake.Mode.kCone;
-            }
-        }));
+        gamepad.rightTriggerButton.whileTrue(new ConditionalCommand(
+                new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kCube),
+                new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kCone),
+                () -> getRightTriggerRaw() < 0.9
+        ));
+
+        gamepad.rightTriggerButton.whileTrue(DrivetrainCommands.driveIntakeMode(
+                this::getDriveTranslationX,
+                this::getDriveTranslationY,
+                this::getDriveRotation
+        ));
 
         gamepad.rightTriggerButton.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kDeployed));
         gamepad.rightTriggerButton.onFalse(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kStowed));

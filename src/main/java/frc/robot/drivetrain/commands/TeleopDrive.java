@@ -36,7 +36,7 @@ public class TeleopDrive extends CommandBase {
         final var translation = translationSupplier.get();
         final var rotation = rotationSupplier.get();
 
-        drivetrain.drive(translation, rotation.getRadians(), isFieldRelative, isOpenLoop);
+        drivetrain.drive(translation, rotation.getRadians(), isFieldRelative, isOpenLoop, rotationOffset);
     }
 
 }

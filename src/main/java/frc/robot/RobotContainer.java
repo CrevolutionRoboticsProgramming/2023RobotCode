@@ -17,11 +17,8 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.SwerveDrivetrainConstants;
 import frc.robot.autos.AutonMaster;
 import frc.robot.claw.Claw;
-import frc.robot.drivetrainOld.SwerveDrivetrain;
-import frc.robot.drivetrainOld.commands.TeleopDrive;
 import frc.robot.elevator.Elevator;
 
 
@@ -91,7 +88,7 @@ public class RobotContainer {
     private void setDefaultCommands() {
         intakePivot.setDefaultCommand(new HoldPivot(intakePivot));
         elevator.setDefaultCommand(ElevatorCommands.holdState());
-        drivetrain.setDefaultCommand(DrivetrainCommands.driveFieldOriented(
+        drivetrain.setDefaultCommand(DrivetrainCommands.drive(
                 driverGamepad::getDriveTranslationX,
                 driverGamepad::getDriveTranslationY,
                 driverGamepad::getDriveRotation

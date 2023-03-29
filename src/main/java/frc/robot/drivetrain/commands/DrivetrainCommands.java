@@ -10,37 +10,37 @@ import frc.robot.drivetrain.DrivetrainConfig;
 import java.util.function.DoubleSupplier;
 
 public class DrivetrainCommands {
-    public static Command driveFieldOriented(DoubleSupplier translationX, DoubleSupplier translationY,
-                                             DoubleSupplier rotation) {
+    public static Command drive(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier rotation) {
         return drive(translationX, translationY, rotation, 1.0, 1.0, true, new Translation2d(0, 0));
     }
 
-    public static Command driveFieldOrientedSlow(DoubleSupplier translationX, DoubleSupplier translationY,
-                                                 DoubleSupplier rotation) {
+    public static Command driveSlowMode(DoubleSupplier translationX, DoubleSupplier translationY,
+                                        DoubleSupplier rotation) {
         return drive(
                 translationX,
                 translationY,
                 rotation,
-                0.25,
-                0.5,
-//                DrivetrainConfig.kSlowModeTranslationModifier,
-//                DrivetrainConfig.kSlowModeRotationModifier,
+                DrivetrainConfig.kSlowModeTranslationModifier,
+                DrivetrainConfig.kSlowModeRotationModifier,
                 true,
                 new Translation2d(0, 0)
         );
     }
 
-    public static Command driveRobotOriented(DoubleSupplier translationX, DoubleSupplier translationY,
-                                             DoubleSupplier rotation) {
-        return drive(translationX, translationY, rotation, 1.0, 1.0, false, new Translation2d(0, 0));
-    }
-
-    public static Command driveWithIntakeRotation(DoubleSupplier translationX, DoubleSupplier translationY,
-                                                  DoubleSupplier rotation) {
-        return drive(translationX, translationY, rotation, 1.0, 1.0, true, new Translation2d(
-                -Constants.SwerveDrivetrainConstants.DRIVETRAIN_ACTUAL_LENGTH / 2.0,
-                0
-        ));
+    public static Command driveIntakeMode(DoubleSupplier translationX, DoubleSupplier translationY,
+                                          DoubleSupplier rotation) {
+       return drive(
+               translationX,
+               translationY,
+               rotation,
+               DrivetrainConfig.kIntakeModeTranslationModifier,
+               DrivetrainConfig.kIntakeModeRotationModifier,
+               true,
+               new Translation2d(
+                       -(Constants.SwerveDrivetrainConstants.DRIVETRAIN_ACTUAL_LENGTH + 0.2) / 2.0,
+                       0
+               )
+       );
     }
 
     // TODO: Legacy bug where Y and X inputs are inverted in the Translation2d

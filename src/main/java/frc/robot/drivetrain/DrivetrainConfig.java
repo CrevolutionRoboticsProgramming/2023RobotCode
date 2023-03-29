@@ -121,6 +121,11 @@ public class DrivetrainConfig {
         return config;
     }
 
-    public static final double kSlowModeTranslationModifier = 0.5;
+    public static final double kSlowModeTranslationModifier = 0.25;
     public static final double kSlowModeRotationModifier = 0.5;
+
+    public static final double kIntakeModeTranslationModifier = 0.75;
+    public static final double kIntakeModeRotationModifier = 0.6;
+
+
 }
