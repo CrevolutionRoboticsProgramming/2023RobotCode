@@ -163,6 +163,23 @@ public final class AutonMaster {
                 "wire_1.5_cube_shoot_balance",
                 "Wire 1.5 Cube Shoot + Balance",
                 AutonConstraints.kSlow.get()
+        ),
+        kWire1_5CubeShoot(
+                "wire_1.5_cube_shoot",
+                "Wire 1.5 Cube Shoot",
+                AutonConstraints.kSlow.get()
+        ),
+        kWire1_5HighConeBalance(
+                "wire_1.5_high_cone_balance",
+                "Wire 1.5 High Cone + Balance",
+                AutonConstraints.kCreep.get(),
+                AutonConstraints.kSlow.get()
+        ),
+        kWire1_5HighCone(
+                "wire_1.5_high_cone",
+                "Wire 1.5 High Cone",
+                AutonConstraints.kCreep.get(),
+                AutonConstraints.kSlow.get()
         );
 
         AutonPath(String pathName, String displayName, PathConstraints constraint, PathConstraints... constraints) {
