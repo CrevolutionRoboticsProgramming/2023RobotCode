@@ -1,6 +1,8 @@
 package frc.robot.drivetrain;
 
 import com.ctre.phoenix.sensors.Pigeon2;
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.math.controller.BangBangController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -10,11 +12,12 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.SPI;
 
 public class Drivetrain extends SubsystemBase {
     public SwerveDriveOdometry m_swerveOdometry;
     public SwerveModule[] m_swerveMods;
-    public Pigeon2 m_gyro;
+    public AHRS m_gyro;
     double pitchDerivative;
     double currentPitch = 0;
     double lastPitch = 0;
@@ -27,8 +30,7 @@ public class Drivetrain extends SubsystemBase {
     BangBangController m_forward_bang_bang, m_reverse_bang_bang;
 
     public Drivetrain() {
-        m_gyro = new Pigeon2(DrivetrainConfig.kPigeonId);
-        m_gyro.configFactoryDefault();
+        m_gyro = new AHRS(SPI.Port.kMXP);
         zeroGyro();
 
         m_swerveMods = new SwerveModule[]{
@@ -148,11 +150,11 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void zeroGyro() {
-        m_gyro.setYaw(0);
+        m_gyro.reset();
     }
 
     public Rotation2d getYaw() {
-        return (DrivetrainConfig.kPigeonInvert) ? Rotation2d.fromDegrees(360 - m_gyro.getYaw()) :
+        return (DrivetrainConfig.kGyroInvert) ? Rotation2d.fromDegrees(360 - m_gyro.getYaw()) :
                 Rotation2d.fromDegrees(m_gyro.getYaw());
     }
 
