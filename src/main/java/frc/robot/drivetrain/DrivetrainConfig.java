@@ -60,7 +60,7 @@ public class DrivetrainConfig {
     );
 
     public static final int kPigeonId = 13;
-    public static final boolean kPigeonInvert = false;
+    public static final boolean kGyroInvert = true;
 
     // Controller Constants
     public static final double kDriveS = (0.48665 / 12.0);
