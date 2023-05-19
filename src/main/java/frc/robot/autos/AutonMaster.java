@@ -43,7 +43,7 @@ public final class AutonMaster {
             Map.entry("Stop", new InstantCommand(RobotContainer.drivetrain::stopSwerve)),
 
             Map.entry("ZeroGyro", new InstantCommand(() -> {
-                    RobotContainer.drivetrain.m_gyro.setYaw(RobotContainer.drivetrain.getYaw().getDegrees());
+                    RobotContainer.drivetrain.m_gyro.zeroYaw();
             })),
 
             Map.entry("IntakeDown", new ParallelCommandGroup(
