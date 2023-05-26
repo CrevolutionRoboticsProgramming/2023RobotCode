@@ -9,9 +9,9 @@ import frc.robot.elevator.commands.SetElevatorState;
 
 public class ScoreMid extends SequentialCommandGroup {
     public ScoreMid() {
-        addCommands(
-                new SetElevatorState(RobotContainer.elevator, ElevatorConfig.ElevatorState.kMid)
-                        .alongWith(new WaitCommand(0.5).andThen(new ClearHood()))
-        );
+        // addCommands(
+        //         new SetElevatorState(RobotContainer.elevator, ElevatorConfig.ElevatorState.kMid)
+        //                 .alongWith(new WaitCommand(0.5).andThen(new ClearHood()))
+        // );
     }
 }

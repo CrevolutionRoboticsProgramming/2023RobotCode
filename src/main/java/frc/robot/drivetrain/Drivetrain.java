@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SerialPort;
 
 public class Drivetrain extends SubsystemBase {
     public SwerveDriveOdometry m_swerveOdometry;
@@ -30,7 +31,7 @@ public class Drivetrain extends SubsystemBase {
     BangBangController m_forward_bang_bang, m_reverse_bang_bang;
 
     public Drivetrain() {
-        m_gyro = new AHRS(SPI.Port.kMXP);
+        m_gyro = new AHRS(SerialPort.Port.kUSB);
         zeroGyro();
 
         m_swerveMods = new SwerveModule[]{
@@ -49,8 +50,8 @@ public class Drivetrain extends SubsystemBase {
         m_reverse_bang_bang = new BangBangController();
         m_reverse_bang_bang.setSetpoint(-DRIVE_BANG_BANG_SP);
 
-        Timer.delay(1);
-        resetModules();
+        // Timer.delay(1);
+        // resetModules();
     }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {

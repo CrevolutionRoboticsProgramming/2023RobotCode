@@ -47,30 +47,30 @@ public class OperatorGamepad extends Gamepad {
     //    gamepad.yButton.onTrue(new ScoreHigh());
 
 //        gamepad.yButton.onTrue(new ScoreHigh());
-        gamepad.startButton.onTrue(new InstantCommand(() -> RobotContainer.elevator.zero()));
+        // gamepad.startButton.onTrue(new InstantCommand(() -> RobotContainer.elevator.zero()));
 
-        gamepad.rightBumper.onTrue(ClawCommands.toggleState());
+        // gamepad.rightBumper.onTrue(ClawCommands.toggleState());
 
 
 
-        gamepad.bButton.onTrue(new HandoffCube());
-        gamepad.bButton.and(shift()).onTrue(new HandoffCone());
+        // gamepad.bButton.onTrue(new HandoffCube());
+        // gamepad.bButton.and(shift()).onTrue(new HandoffCone());
 
-        // Intake commands
-        gamepad.leftBumper.onTrue(new ToggleHood(RobotContainer.intakeHood));
-        gamepad.Dpad.Up.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kHumanPlayer));
-        gamepad.Dpad.Down.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kDeployed));
-        gamepad.Dpad.Left.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kStowed));
-        gamepad.Dpad.Right.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kScoreLow));
-        // gamepad.startButton.onTrue(new SequentialCommandGroup(new SetPivotState(RobotContainer.intakePivot, PivotState.kShoot),
-        //                                 new RunIntake(RobotContainer.intakeRoller, Mode.kOuttake).withTimeout(2)));
-        gamepad.startButton.onTrue(new ShootHighTeleop());
-        gamepad.leftTriggerButton.whileTrue(new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kShooter));
-        // gamepad.leftTriggerButton.whileTrue(IntakeCommands.runRollerManual(RobotContainer.intakeRoller, getLeftTriggerRaw()));
+        // // Intake commands
+        // gamepad.leftBumper.onTrue(new ToggleHood(RobotContainer.intakeHood));
+        // gamepad.Dpad.Up.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kHumanPlayer));
+        // gamepad.Dpad.Down.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kDeployed));
+        // gamepad.Dpad.Left.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kStowed));
+        // gamepad.Dpad.Right.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kScoreLow));
+        // // gamepad.startButton.onTrue(new SequentialCommandGroup(new SetPivotState(RobotContainer.intakePivot, PivotState.kShoot),
+        // //                                 new RunIntake(RobotContainer.intakeRoller, Mode.kOuttake).withTimeout(2)));
+        // gamepad.startButton.onTrue(new ShootHighTeleop());
+        // gamepad.leftTriggerButton.whileTrue(new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kShooter));
+        // // gamepad.leftTriggerButton.whileTrue(IntakeCommands.runRollerManual(RobotContainer.intakeRoller, getLeftTriggerRaw()));
 
-        // Manual overrides
-        shift().whileTrue(new RunElevatorManual(RobotContainer.elevator, () -> gamepad.rightStick.getY()));
-        shift().whileTrue(new RunPivotManual(RobotContainer.intakePivot, () -> gamepad.leftStick.getY()));
+        // // Manual overrides
+        // shift().whileTrue(new RunElevatorManual(RobotContainer.elevator, () -> gamepad.rightStick.getY()));
+        // shift().whileTrue(new RunPivotManual(RobotContainer.intakePivot, () -> gamepad.leftStick.getY()));
     }
 
     @Override

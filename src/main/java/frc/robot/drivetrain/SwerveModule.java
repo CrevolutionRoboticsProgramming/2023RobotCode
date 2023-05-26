@@ -43,13 +43,13 @@ public class SwerveModule {
         this.moduleId = moduleId;
         this.angleOffset = config.angleOffset;
 
-        angleEncoder = new CANCoder(config.angleEncoderId, "Canivore");
+        angleEncoder = new CANCoder(config.angleEncoderId);
         configAngleEncoder(config.angleEncoderInvert);
 
-        angleMotor = new TalonFX(config.angleMotorId, "Canivore");
+        angleMotor = new TalonFX(config.angleMotorId);
         configAngleMotor(config.angleInvert);
 
-        driveMotor = new TalonFX(config.driveMotorId, "Canivore");
+        driveMotor = new TalonFX(config.driveMotorId);
         configDriveMotor(config.driveInvert);
 
         ffDriveController = new SimpleMotorFeedforward(

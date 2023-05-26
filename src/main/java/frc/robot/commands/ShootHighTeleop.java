@@ -15,12 +15,12 @@ import frc.robot.intake.commands.RunIntake.Mode;
 
 public class ShootHighTeleop extends SequentialCommandGroup{
     public ShootHighTeleop() {
-        addCommands(
-            new ParallelCommandGroup(new SetElevatorState(RobotContainer.elevator, ElevatorState.kChamber), 
-            new SetPivotState(RobotContainer.intakePivot, PivotState.kShootHigh)),
-            new InstantCommand(() -> RobotContainer.intakeHood.setState(HoodState.kOpen)).alongWith(new WaitCommand(1)),
-            new ParallelCommandGroup(new RunIntake(RobotContainer.intakeRoller, Mode.kShooter).withTimeout(1.5),
-            new InstantCommand( () -> RobotContainer.intakeHood.setState(HoodState.kClosed)))
-        );
+        // addCommands(
+        //     new ParallelCommandGroup(new SetElevatorState(RobotContainer.elevator, ElevatorState.kChamber), 
+        //     new SetPivotState(RobotContainer.intakePivot, PivotState.kShootHigh)),
+        //     new InstantCommand(() -> RobotContainer.intakeHood.setState(HoodState.kOpen)).alongWith(new WaitCommand(1)),
+        //     new ParallelCommandGroup(new RunIntake(RobotContainer.intakeRoller, Mode.kShooter).withTimeout(1.5),
+        //     new InstantCommand( () -> RobotContainer.intakeHood.setState(HoodState.kClosed)))
+        // );
     }
 }

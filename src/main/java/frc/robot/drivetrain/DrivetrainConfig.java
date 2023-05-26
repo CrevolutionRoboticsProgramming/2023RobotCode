@@ -18,8 +18,8 @@ public class DrivetrainConfig {
     public static final double kDriveGearRatio = (6.12/1.0);
     public static final double kAngleGearRatio = ((-150.0/7)/1.0);
 
-    public static final double kDrivetrainWidth = Units.inchesToMeters(20.25);
-    public static final double kDrivetrainHeight = Units.inchesToMeters(28.75);
+    public static final double kDrivetrainWidth = Units.inchesToMeters(26.25);
+    public static final double kDrivetrainHeight = Units.inchesToMeters(26.25);
     public static final double kDrivetrainActualLength = Units.inchesToMeters(28.0);
     public static final double kWheelDiameter = Units.inchesToMeters(4.0);
     public static final double kWheelCircumfurence = (kWheelDiameter * Math.PI);
@@ -35,31 +35,31 @@ public class DrivetrainConfig {
             1,
             3,
             2,
-            Rotation2d.fromDegrees(176.66)
+            Rotation2d.fromDegrees(304.18)
     );
 
     public static final SwerveModule.Config kFrontRightModuleConfig = new SwerveModule.Config(
             10,
             12,
             11,
-            Rotation2d.fromDegrees(203.99)
+            Rotation2d.fromDegrees(259.45)
     );
 
     public static final SwerveModule.Config kBackLeftModuleConfig = new SwerveModule.Config(
             4,
             6,
             5,
-            Rotation2d.fromDegrees(100.98)
+            Rotation2d.fromDegrees(17.57)
     );
 
     public static final SwerveModule.Config kBackRightModuleConfig = new SwerveModule.Config(
             7,
             9,
             8,
-            Rotation2d.fromDegrees(64.59)
+            Rotation2d.fromDegrees(165.58)
     );
 
-    public static final int kPigeonId = 13;
+//     public static final int kPigeonId = 13;
     public static final boolean kGyroInvert = true;
 
     // Controller Constants

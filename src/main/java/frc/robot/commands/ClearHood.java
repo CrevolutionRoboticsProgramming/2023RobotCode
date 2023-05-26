@@ -8,9 +8,9 @@ import frc.robot.intake.commands.SetPivotState;
 
 public class ClearHood extends ParallelCommandGroup {
     public ClearHood() {
-        addCommands(
-                new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kHumanPlayer),
-                new InstantCommand(() -> RobotContainer.intakeHood.setState(IntakeConfig.HoodState.kClosed))
-        );
+        // addCommands(
+        //         new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kHumanPlayer),
+        //         new InstantCommand(() -> RobotContainer.intakeHood.setState(IntakeConfig.HoodState.kClosed))
+        // );
     }
 }

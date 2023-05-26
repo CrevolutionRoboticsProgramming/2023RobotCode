@@ -14,23 +14,23 @@ import frc.robot.intake.commands.SetPivotState;
 
 public class HandoffCone extends SequentialCommandGroup {
     public HandoffCone() {
-        addCommands(
-                new SetElevatorState(RobotContainer.elevator, ElevatorConfig.ElevatorState.kLoad),
-                new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kNeutral)
-                        .alongWith(ClawCommands.setState(ClawConfig.ClawState.kOpen)),
-                new InstantCommand(() -> RobotContainer.intakeHood.setState(IntakeConfig.HoodState.kOpen)),
-                new WaitCommand(0.25),
-                new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kHandoff).withTimeout(0.75),
-                new SetElevatorState(RobotContainer.elevator, ElevatorConfig.ElevatorState.kZero),
-                ClawCommands.setState(ClawConfig.ClawState.kClosed),
-                new SetElevatorState(RobotContainer.elevator, ElevatorConfig.ElevatorState.kChamber),
-                new WaitCommand(0.2),
-                ClawCommands.setState(ClawConfig.ClawState.kOpen),
-                new WaitCommand(0.2),
-                new SetElevatorState(RobotContainer.elevator, ElevatorConfig.ElevatorState.kZero),
-                new WaitCommand(0.5),
-                ClawCommands.setState(ClawConfig.ClawState.kClosed),
-                new SetElevatorState(RobotContainer.elevator, ElevatorConfig.ElevatorState.kPreScore)
-        );
+        // addCommands(
+        //         new SetElevatorState(RobotContainer.elevator, ElevatorConfig.ElevatorState.kLoad),
+        //         new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kNeutral)
+        //                 .alongWith(ClawCommands.setState(ClawConfig.ClawState.kOpen)),
+        //         new InstantCommand(() -> RobotContainer.intakeHood.setState(IntakeConfig.HoodState.kOpen)),
+        //         new WaitCommand(0.25),
+        //         new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kHandoff).withTimeout(0.75),
+        //         new SetElevatorState(RobotContainer.elevator, ElevatorConfig.ElevatorState.kZero),
+        //         ClawCommands.setState(ClawConfig.ClawState.kClosed),
+        //         new SetElevatorState(RobotContainer.elevator, ElevatorConfig.ElevatorState.kChamber),
+        //         new WaitCommand(0.2),
+        //         ClawCommands.setState(ClawConfig.ClawState.kOpen),
+        //         new WaitCommand(0.2),
+        //         new SetElevatorState(RobotContainer.elevator, ElevatorConfig.ElevatorState.kZero),
+        //         new WaitCommand(0.5),
+        //         ClawCommands.setState(ClawConfig.ClawState.kClosed),
+        //         new SetElevatorState(RobotContainer.elevator, ElevatorConfig.ElevatorState.kPreScore)
+        // );
     }
 }

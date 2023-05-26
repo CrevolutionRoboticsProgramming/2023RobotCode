@@ -11,9 +11,9 @@ import frc.robot.intake.commands.SetPivotState;
 
 public class ElevatorZero extends ParallelCommandGroup {
     public ElevatorZero() {
-        addCommands(
-            new SetElevatorState(RobotContainer.elevator, ElevatorState.kZeroGoal)
-            .alongWith(IntakeCommands.clearPivotDown())
-        );
+        // addCommands(
+        //     new SetElevatorState(RobotContainer.elevator, ElevatorState.kZeroGoal)
+        //     .alongWith(IntakeCommands.clearPivotDown())
+        // );
     }
 }

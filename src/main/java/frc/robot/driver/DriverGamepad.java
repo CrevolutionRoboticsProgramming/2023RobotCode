@@ -32,11 +32,11 @@ public class DriverGamepad extends Gamepad {
         ));
 
         // Intake controls
-        gamepad.rightTriggerButton.whileTrue(new ConditionalCommand(
-                new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kCube),
-                new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kCone),
-                () -> getRightTriggerRaw() < 0.9
-        ));
+        // gamepad.rightTriggerButton.whileTrue(new ConditionalCommand(
+        //         new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kCube),
+        //         new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kCone),
+        //         () -> getRightTriggerRaw() < 0.9
+        // ));
 
         gamepad.rightTriggerButton.whileTrue(DrivetrainCommands.driveIntakeMode(
                 this::getDriveTranslationX,
@@ -44,11 +44,11 @@ public class DriverGamepad extends Gamepad {
                 this::getDriveRotation
         ));
 
-        gamepad.rightTriggerButton.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kDeployed));
-        gamepad.rightTriggerButton.onFalse(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kStowed));
+        // gamepad.rightTriggerButton.onTrue(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kDeployed));
+        // gamepad.rightTriggerButton.onFalse(new SetPivotState(RobotContainer.intakePivot, IntakeConfig.PivotState.kStowed));
 
 
-        gamepad.rightBumper.whileTrue(new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kCone));
+        // gamepad.rightBumper.whileTrue(new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kCone));
     }
 
     @Override

@@ -40,9 +40,9 @@ public class SwerveModule {
         m_angleInverted = angleInverted;
         m_canCoderInverted = cancoderInverted;
         
-        m_angleMotor = new TalonFX(angleMotor, "Canivore");
-        m_driveMotor = new TalonFX(driveMotor, "Canivore");
-        m_canCoder = new CANCoder(canCoder, "Canivore");
+        m_angleMotor = new TalonFX(angleMotor);
+        m_driveMotor = new TalonFX(driveMotor);
+        m_canCoder = new CANCoder(canCoder);
 
         configAngleMotor();
         configDriveMotor();

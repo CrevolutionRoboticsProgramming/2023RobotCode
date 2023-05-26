@@ -46,36 +46,36 @@ public final class AutonMaster {
                     RobotContainer.drivetrain.m_gyro.zeroYaw();
             })),
 
-            Map.entry("IntakeDown", new ParallelCommandGroup(
-                    new SetPivotState(RobotContainer.intakePivot, PivotState.kDeployed),
-                    new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kCube)
-            )),
+        //     Map.entry("IntakeDown", new ParallelCommandGroup(
+        //             new SetPivotState(RobotContainer.intakePivot, PivotState.kDeployed),
+        //             new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kCube)
+        //     )),
 
 
-            Map.entry("IntakeUp", new ParallelCommandGroup(
-                    new SetPivotState(RobotContainer.intakePivot, PivotState.kHumanPlayer),
-                    new InstantCommand(() -> RobotContainer.intakeRoller.stop(), RobotContainer.intakeRoller)
-            )),
+        //     Map.entry("IntakeUp", new ParallelCommandGroup(
+        //             new SetPivotState(RobotContainer.intakePivot, PivotState.kHumanPlayer),
+        //             new InstantCommand(() -> RobotContainer.intakeRoller.stop(), RobotContainer.intakeRoller)
+        //     )),
 
-            Map.entry("ShootLow", new SequentialCommandGroup(
-                    new SetPivotState(RobotContainer.intakePivot, PivotState.kScoreLow),
-                    new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kOuttake).withTimeout(2)
-            )),
+        //     Map.entry("ShootLow", new SequentialCommandGroup(
+        //             new SetPivotState(RobotContainer.intakePivot, PivotState.kScoreLow),
+        //             new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kOuttake).withTimeout(2)
+        //     )),
 
-            // Note: currently intake is positioned by drive team in auto due to slack in mechanism
-            Map.entry("ShootCube", new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kOuttake).withTimeout(2)),
+        //     // Note: currently intake is positioned by drive team in auto due to slack in mechanism
+        //     Map.entry("ShootCube", new RunIntake(RobotContainer.intakeRoller, RunIntake.Mode.kOuttake).withTimeout(2)),
 
-            Map.entry("ScoreMid", new SequentialCommandGroup(
-                    ClawCommands.setState(ClawState.kClosed),
-                    new ScoreMid(),
-                    ClawCommands.setState(ClawState.kOpen)
-            )),
+        //     Map.entry("ScoreMid", new SequentialCommandGroup(
+        //             ClawCommands.setState(ClawState.kClosed),
+        //             new ScoreMid(),
+        //             ClawCommands.setState(ClawState.kOpen)
+        //     )),
 
-            Map.entry("ScoreHigh", new SequentialCommandGroup(
-                    ClawCommands.setState(ClawState.kClosed),
-                    new ScoreHigh(),
-                    ClawCommands.setState(ClawState.kOpen)
-            )),
+        //     Map.entry("ScoreHigh", new SequentialCommandGroup(
+        //             ClawCommands.setState(ClawState.kClosed),
+        //             new ScoreHigh(),
+        //             ClawCommands.setState(ClawState.kOpen)
+        //     )),
 
             Map.entry("ShootCubeHigh", new ShootHigh()),
 
@@ -95,11 +95,11 @@ public final class AutonMaster {
 
             Map.entry("ElevatorHigh", new ScoreMid()),
 
-            Map.entry("ElevatorMid", new SetElevatorState(RobotContainer.elevator, ElevatorState.kMid)),
+        //     Map.entry("ElevatorMid", new SetElevatorState(RobotContainer.elevator, ElevatorState.kMid)),
 
-            Map.entry("DropPiece", new InstantCommand(() -> {
-                RobotContainer.claw.setClawState(ClawState.kOpen);
-            }).andThen(new WaitCommand(2))),
+        //     Map.entry("DropPiece", new InstantCommand(() -> {
+        //         RobotContainer.claw.setClawState(ClawState.kOpen);
+        //     }).andThen(new WaitCommand(2))),
 
             Map.entry("StopDrivetrain", new InstantCommand(() -> RobotContainer.drivetrain.stopSwerve()))
     ));

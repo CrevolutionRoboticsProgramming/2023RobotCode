@@ -9,11 +9,11 @@ import frc.robot.elevator.ElevatorConfig;
 import frc.robot.elevator.ElevatorConfig.ElevatorState;
 
 public class ElevatorCommands {
-    public static Command setState(ElevatorConfig.ElevatorState state) {
-        return new SetElevatorState(RobotContainer.elevator, state);
-    }
+    // public static Command setState(ElevatorConfig.ElevatorState state) {
+    //     return new SetElevatorState(RobotContainer.elevator, state);
+    // }
 
-    public static Command holdState() {
-        return new HoldElevatorState(RobotContainer.elevator);
-    }
+    // public static Command holdState() {
+    //     return new HoldElevatorState(RobotContainer.elevator);
+    // }
 }

@@ -19,11 +19,11 @@ import frc.robot.intake.commands.RunIntake.Mode;
 
 public class ShootHigh extends SequentialCommandGroup{
     public ShootHigh() {
-        addCommands(
-            new ParallelCommandGroup(new SetElevatorState(RobotContainer.elevator, ElevatorState.kChamber), 
-            new SetPivotState(RobotContainer.intakePivot, PivotState.kShootHigh)),
-            new ParallelCommandGroup(new RunIntake(RobotContainer.intakeRoller, Mode.kShooter).withTimeout(1.5),
-            new InstantCommand( () -> RobotContainer.intakeHood.setState(HoodState.kClosed)))
-        );
+        // addCommands(
+        //     new ParallelCommandGroup(new SetElevatorState(RobotContainer.elevator, ElevatorState.kChamber), 
+        //     new SetPivotState(RobotContainer.intakePivot, PivotState.kShootHigh)),
+        //     new ParallelCommandGroup(new RunIntake(RobotContainer.intakeRoller, Mode.kShooter).withTimeout(1.5),
+        //     new InstantCommand( () -> RobotContainer.intakeHood.setState(HoodState.kClosed)))
+        // );
     }
 }

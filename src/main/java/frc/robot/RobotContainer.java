@@ -32,16 +32,16 @@ public class RobotContainer {
     /*Declare Joystick*/
     public static XboxController driverControllerRetro = new XboxController(0);
     public static DriverGamepad driverGamepad;
-    public static OperatorGamepad operatorGamepad;
+    // public static OperatorGamepad operatorGamepad;
 
     /*Declare Subsystems*/
     public static Drivetrain drivetrain;
     //    public static PoseEstimator poseEstimator;
-    public static IntakePivot intakePivot;
-    public static IntakeRoller intakeRoller;
-    public static IntakeHood intakeHood;
-    public static Elevator elevator;
-    public static Claw claw;
+    // public static IntakePivot intakePivot;
+    // public static IntakeRoller intakeRoller;
+    // public static IntakeHood intakeHood;
+    // public static Elevator elevator;
+    // public static Claw claw;
     //public static PneumaticsControlModule pcm;
 
     /*Sendable Chooser Selector for Auton */
@@ -51,16 +51,16 @@ public class RobotContainer {
         // Subsystem initialization
         drivetrain = new Drivetrain();
 //        poseEstimator = new PoseEstimator(orangePi, drivetrain);
-        intakePivot = new IntakePivot();
-        intakeRoller = new IntakeRoller();
-        intakeHood = new IntakeHood();
-        elevator = new Elevator();
-        claw = new Claw();
+        // intakePivot = new IntakePivot();
+        // intakeRoller = new IntakeRoller();
+        // intakeHood = new IntakeHood();
+        // elevator = new Elevator();
+        // claw = new Claw();
 
 
         // Gamepad initialization
         driverGamepad = new DriverGamepad();
-        operatorGamepad = new OperatorGamepad();
+        // operatorGamepad = new OperatorGamepad();
 
 
         autoChooser = AutonMaster.getAutoSelector();
@@ -85,13 +85,13 @@ public class RobotContainer {
         CommandScheduler.getInstance().clearButtons();
         CommandScheduler.getInstance().getActiveButtonLoop().clear();
         driverGamepad.resetConfig();
-        operatorGamepad.resetConfig();
+        // operatorGamepad.resetConfig();
        // new InstantCommand(() -> RobotContainer.claw.setClawState(ClawState.kOpen), RobotContainer.claw);
     }
 
     private void setDefaultCommands() {
-        intakePivot.setDefaultCommand(new HoldPivot(intakePivot));
-        elevator.setDefaultCommand(ElevatorCommands.holdState());
+        // intakePivot.setDefaultCommand(new HoldPivot(intakePivot));
+        // elevator.setDefaultCommand(ElevatorCommands.holdState());
         drivetrain.setDefaultCommand(DrivetrainCommands.drive(
                 driverGamepad::getDriveTranslationX,
                 driverGamepad::getDriveTranslationY,

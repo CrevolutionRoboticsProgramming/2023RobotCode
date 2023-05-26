@@ -8,9 +8,9 @@ import frc.robot.elevator.commands.SetElevatorState;
 
 public class ScoreHigh extends SequentialCommandGroup {
     public ScoreHigh() {
-        addCommands(
-                new SetElevatorState(RobotContainer.elevator, ElevatorConfig.ElevatorState.kHighGoal)
-                        .alongWith(new WaitCommand(0.5).andThen(new ClearHood()))
-        );
+        // addCommands(
+        //         new SetElevatorState(RobotContainer.elevator, ElevatorConfig.ElevatorState.kHighGoal)
+        //                 .alongWith(new WaitCommand(0.5).andThen(new ClearHood()))
+        // );
     }
 }
