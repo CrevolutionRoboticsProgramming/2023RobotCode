@@ -35,7 +35,7 @@ public class DrivetrainConfig {
             1,
             3,
             2,
-            Rotation2d.fromDegrees(304.18)
+            Rotation2d.fromDegrees(84.63)
     );
 
     public static final SwerveModule.Config kFrontRightModuleConfig = new SwerveModule.Config(
@@ -49,14 +49,14 @@ public class DrivetrainConfig {
             4,
             6,
             5,
-            Rotation2d.fromDegrees(17.57)
+            Rotation2d.fromDegrees(17.226)
     );
 
     public static final SwerveModule.Config kBackRightModuleConfig = new SwerveModule.Config(
             7,
             9,
             8,
-            Rotation2d.fromDegrees(165.58)
+            Rotation2d.fromDegrees(166.72)
     );
 
 //     public static final int kPigeonId = 13;

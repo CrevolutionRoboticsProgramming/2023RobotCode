@@ -25,13 +25,12 @@ public class Drivetrain extends SubsystemBase {
     double counter = 0;
 
     final double DRIVE_BANG_BANG_FWD = .06;
-    final double DRIVE_BANG_BANG_BACK = -.04;
     final int DRIVE_BANG_BANG_SP = 10;
 
     BangBangController m_forward_bang_bang, m_reverse_bang_bang;
 
     public Drivetrain() {
-        m_gyro = new AHRS(SerialPort.Port.kUSB);
+        m_gyro = new AHRS(SerialPort.Port.kUSB1);
         zeroGyro();
 
         m_swerveMods = new SwerveModule[]{
@@ -151,7 +150,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void zeroGyro() {
-        m_gyro.reset();
+        m_gyro.zeroYaw();
     }
 
     public Rotation2d getYaw() {
